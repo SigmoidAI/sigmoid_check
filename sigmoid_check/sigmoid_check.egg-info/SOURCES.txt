@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+sigmoid_check/python_odyssey/__init__.py
+sigmoid_check/python_odyssey/lesson_10.py
+sigmoid_check/sigmoid_check.egg-info/PKG-INFO
+sigmoid_check/sigmoid_check.egg-info/SOURCES.txt
+sigmoid_check/sigmoid_check.egg-info/dependency_links.txt
+sigmoid_check/sigmoid_check.egg-info/top_level.txt

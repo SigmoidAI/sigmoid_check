@@ -1,3 +1,24 @@
+Metadata-Version: 2.1
+Name: sigmoid_check
+Version: 0.0.1
+Summary: A package for checking the implementation of tasks in Sigmoid Courses
+Author: SigmoidAI - Balamatiuc Eduard
+Author-email: balamatiuc2@gmail.com
+License: Apache License 2.0
+Keywords: tasks,check,sigmoid,sigmoidai,sigmoid_check
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # sigmoid_check
 
 sigmoid_check is a library for automation testing of Sigmoid's homeworks. It contains a set of functions that can be used to test the correctness of the homeworks.
