@@ -32,7 +32,7 @@ class Task1:
             assert issubclass(self.class_user_manager, self.class_user)
             assert issubclass(self.class_user_admin, self.class_user)
             return True
-        except AssertionError:
+        except:
             return False
 
 
@@ -67,7 +67,7 @@ class Task2:
             sistem.sterge_utilizator(1)
             assert sistem.afiseaza_utilizatori() == []
             return True
-        except AssertionError:
+        except:
             return False
 
 
@@ -121,8 +121,8 @@ class Lesson14:
             if self.status_tasks["task_1"]:
                 return "Task 1: Correct! Well done."
             return "Task 1: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 1: Error! {e}"
+        except:
+            return f"Task 1: Error!"
         
     def check_task_2(self, class_user, class_sistem):
         """1. Pentru această sarcină vom crea o copie a clasei `Utilizator` de mai sus, deoarece vom avea nevoie de aceeași structură pentru a adăuga utilizatorii în sistem.
@@ -143,8 +143,8 @@ class Lesson14:
             if self.status_tasks["task_2"]:
                 return "Task 2: Correct! Well done."
             return "Task 2: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 2: Error! {e}"
+        except:
+            return f"Task 2: Error!"
 
     def check_task_3(self, class_app):
         """1. Creează o clasă `TechSolutionsApp` care va conține o valoare a clasei `versiune_applicatie` cu valoarea implicită "1.0".
@@ -161,8 +161,8 @@ class Lesson14:
             if self.status_tasks["task_3"]:
                 return "Task 3: Correct! Well done."
             return "Task 3: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 3: Error! {e}"
+        except:
+            return f"Task 3: Error!"
 
     def get_completion_percentage(self):
         """Return the completion percentage of the tasks"""
