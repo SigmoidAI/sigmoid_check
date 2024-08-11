@@ -190,147 +190,19 @@ class Task7:
 class Lesson13:
     """Test class for checking the implementation of tasks in lesson 13 of the Python Odyssey Bootcamp."""
     def __init__(self):
-        self.status_tasks = {
-            "task_1": False,
-            "task_2": False,
-            "task_3": False,
-            "task_4": False,
-            "task_5": False,
-            "task_6": False,
-            "task_7": False,
-        }
+        self.status_tasks = {f"task_{i}": False for i in range(1, 8)}
 
-    def check_task_1(self, class_parent):
-        """1. Avem nevoie să creezi o clasă `Produs`, aceasta trebuie să accepte 3 parametri: numele, pretul, anul_producerii
-        Cu ajutorul acestei clase trebuie să fiu capabil să creeze câte obiecte doresc cu orice configurație a numelui, prețului și anul_producerii
-
-        Exemplu utilizare:
-        telefon = Produs("Iphone", 15000, 2020) # Voi putea crea un obiect utilizând anumiți parametri de intrare
-        print(telefon.numele)                   # Voi putea accesa numele obiectului creat
-        print(telefon.pretul)                   # Voi putea accesa pretul obiectului creat
-        print(telefon.anul_producerii)          # Voi putea accesa anul producerii obiectului creat
-        """
+    def check_task(self, task_number, *args):
+        task_class = globals()[f"Task{task_number}"]
+        solution_task = task_class(*args)
         try:
-            solution_task_1 = Task1(class_parent)
-            self.status_tasks["task_1"] = solution_task_1.check_task()
-            if self.status_tasks["task_1"]:
-                return "Task 1: Correct! Well done."
-            return "Task 1: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 1: Error! {e}"
+            self.status_tasks[f"task_{task_number}"] = solution_task.check_task()
+            if self.status_tasks[f"task_{task_number}"]:
+                return f"Task {task_number}: Correct! Well done."
+            return f"Task {task_number}: Incorrect! Please try again."
+        except:
+            return f"Task {task_number}: Error!"
         
-    def check_task_2(self, class_child, class_parent):
-        """2.1Prima clasă se numește `Telefon` aceasta va moșteni clasa `Produs` și va avea doi parametri în plus numit `baterie_mAh` și `memorie_GB`
-
-        De asemenea aceasta va avea o metodă numită `upgrade_memory` care va primi un parametru `new_memory` și va actualiza valoarea memoriei telefonului.
-        Totodată aceasta va avea o metodă numită `upgrade_battery` care va primi un parametru `new_battery` și va actualiza valoarea bateriei telefonului.
-        """
-        try:
-            solution_task_2 = Task2(class_child, class_parent)
-            self.status_tasks["task_2"] = solution_task_2.check_task()
-            if self.status_tasks["task_2"]:
-                return "Task 2: Correct! Well done."
-            return "Task 2: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 2: Error! {e}"
-
-    def check_task_3(self, class_child, class_parent):
-        """2.2 A doua clasă se numește `Laptop` aceasta va moșteni clasa `Produs` și va avea doi parametri în plus numit `sistem_de_operare` și `procesor`
-
-        De asemenea aceasta va avea o metodă numită `upgrade_processor` care va primi un parametru `new_processor` și va actualiza valoarea procesorului laptopului.
-        Totodată aceasta va avea o metodă numită `upgrade_os` care va primi un parametru `new_os` și va actualiza valoarea sistemului de operare al laptopului.
-        """
-        try:
-            solution_task_3 = Task3(class_child, class_parent)
-            self.status_tasks["task_3"] = solution_task_3.check_task()
-            if self.status_tasks["task_3"]:
-                return "Task 3: Correct! Well done."
-            return "Task 3: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 3: Error! {e}"
-    
-    def check_task_4(self, class_child, class_parent):
-        """2.3 A treia clasă se numește `trotineta` aceasta va moșteni clasa `Produs` și va avea doi parametri în plus numit `viteza_maxima` și `autonomie_km`
-
-        De asemenea aceasta va avea o metodă numită `upgrade_speed` care va primi un parametru `new_speed` și va actualiza valoarea vitezei maxime a trotinetei.
-        Totodată aceasta va avea o metodă numită `upgrade_autonomy` care va primi un parametru `new_autonomy` și va actualiza valoarea autonomiei trotinetei.
-        """
-        try:
-            solution_task_4 = Task4(class_child, class_parent)
-            self.status_tasks["task_4"] = solution_task_4.check_task()
-            if self.status_tasks["task_4"]:
-                return "Task 4: Correct! Well done."
-            return "Task 4: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 4: Error! {e}"
-    
-    def check_task_5(self, class_child, class_parent):
-        """Avem nevoie de o clasă nouă care să se numească `AppleProduct` care va moșteni clasa `Produs` și va avea un parametru în plus numit `culoare` și `produs_conectat` 
-        parametrul `produs_conectat` va avea valoarea "nimic" la crearea unui produs astfel încât nu va fi necesar de menționat la crearea unui obiect nou
-        De asemenea va avea o metodă numită `combine_products` care va primi un parametru `product` ce va reprezenta un alt obiect de tip `AppleProduct` care va fi salvat în parametrul `produs_conectat`
-        Există o singură condiție, produsul conectat trebuie să fie de tip `AppleProduct` iar culoarea acestuia trebuie să fie aceeași cu a produsului curent.
-
-        Exemplu utilizare:
-        iphone = AppleProduct("Iphone", 15000, 2020, "negru")
-        airpods = AppleProduct("Airpods", 1000, 2021, "alb")
-        iphone.combine_products(airpods) # În acest caz se va returna textul "Produsul nu poate fi conectat deoarece culorile nu coincid"
-
-        iphone = AppleProduct("Iphone", 15000, 2020, "negru")
-        airpods = AppleProduct("Airpods", 1000, 2021, "negru")
-        iphone.combine_products(airpods) # În acest caz se va returna textul "Produsul a fost conectat cu succes" și dacă se va printa iphone.produs_conectat se va returna obiectul airpods
-        print(iphone.produs_conectat.numele) # Va returna numele produsului conectat
-        print(iphone.produs_conectat.pretul) # Va returna prețul produsului conectat
-        """
-        try:
-            solution_task_5 = Task5(class_child, class_parent)
-            self.status_tasks["task_5"] = solution_task_5.check_task()
-            if self.status_tasks["task_5"]:
-                return "Task 5: Correct! Well done."
-            return "Task 5: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 5: Error! {e}"
-
-    def check_task_6(self, class_child, class_parent):
-        """
-        Avem nevoie de o clasă nouă care să se numească `GoogleProduct` care va moșteni clasa `AppleProduct` posibilitățile la ambele sunt aceleași, dar va fi nevoie de o singură schimbare.
-        Produsul conectat trebuie să fie de tip `GoogleProduct` iar culoarea acestuia poate să fie diferită de a produsului curent.
-        Asta ar însemna că singurul element care va necesita modificări este metoda `combine_products` care va trebui să accepte orice tip de obiect de tip `GoogleProduct`
-
-        Exemplu utilizare:
-        pixel = GoogleProduct("Pixel", 10000, 2020, "negru")
-        home = GoogleProduct("Home", 500, 2021, "alb")
-        pixel.combine_products(home) # În acest caz se va returna textul "Produsul a fost conectat cu succes" și dacă se va printa pixel.produs_conectat se va returna obiectul home
-        print(pixel.produs_conectat.numele) # Va returna numele produsului conectat
-        """
-        try:
-            solution_task_6 = Task6(class_child, class_parent)
-            self.status_tasks["task_6"] = solution_task_6.check_task()
-            if self.status_tasks["task_6"]:
-                return "Task 6: Correct! Well done."
-            return "Task 6: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 6: Error! {e}"
-    
-    def check_task_7(self, class_child, class_parent):
-        """Avem nevoie de o clasă nouă pentru aceasta, ea se va numi `Magazin` și va conține doar 2 metode, `vinde_produs` și `returneaza_produs`
-
-        Metoda `vinde_produs` va primi un parametru `produs` care va reprezenta un obiect de tip `Produs` și va returna textul "Produsul *numele produsului* a fost vândut cu succes"
-        Metoda `returneaza_produs` va primi un parametru `produs` care va reprezenta un obiect de tip `Produs` și va returna textul "Produsul *numele produsului* a fost returnat cu succes"
-
-        Exemplu utilizare:
-        iphone = AppleProduct("Iphone", 15000, 2020, "negru")
-        print(magazin.vinde_produs(iphone)) # Va returna textul "Produsul Iphone a fost vândut cu succes"
-        print(magazin.returneaza_produs(iphone)) # Va returna textul "Produsul Iphone a fost returnat cu succes
-        """
-        try:
-            solution_task_7 = Task7(class_child, class_parent)
-            self.status_tasks["task_7"] = solution_task_7.check_task()
-            if self.status_tasks["task_7"]:
-                return "Task 7: Correct! Well done."
-            return "Task 7: Incorrect! Please try again."
-        except AssertionError as e:
-            return f"Task 7: Error! {e}"
-
     def get_completion_percentage(self):
         """Return the completion percentage of the tasks"""
         completed = sum([1 for task in self.status_tasks if self.status_tasks[task]])

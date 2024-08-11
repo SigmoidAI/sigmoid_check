@@ -129,78 +129,60 @@ class Task5:
 class Lesson15:
     """Test class for checking the implementation of tasks in lesson 15 of the Python Odyssey Bootcamp."""
     def __init__(self):
-        self.status_tasks = {
-            "task_1": False,
-            "task_2": False,
-            "task_3": False,
-            "task_4": False,
-            "task_5": False
-        }
+        self.status_tasks = {f"task_{i}": False for i in range(1, 6)}
 
-    def check_task_1(self, class_data_container):
-        """Primul pas în crearea algoritmului este implementarea unor containere de date care va permite stocarea și manipularea datelor într-un mod mai simplu
-        și eficient. Trebuie să creezi o clasă nouă `DataContainer`. Pentru a manipula datele vom folosi metodele speciale ale clasei.
-
-        Clasa va primi ca parametru o listă de numere integer.
-        - __init__ initializează clasa cu lista de numere.
-        - __str__ va returna lista de numere sub formă de string.
-        - __len__ va returna numărul de elemente din listă.
-        - __getitem__ va permite accesarea elementelor din listă folosind indexul (e.g., container[0]).
-        - __setitem__ va permite modificarea elementelor din listă folosind indexul (e.g., container[0] = 5).
-        - __add__ va permite combinarea a două instanțe de `DataContainer` într-o singură instanță.
-        """
-        solution_task_1 = Task1(class_data_container)
-        self.status_tasks["task_1"] = solution_task_1.check_task()
-        return "Task 1: Correct! Well done." if self.status_tasks["task_1"] else "Task 1: Incorrect! Please try again."
-
-    def check_task_2(self, class_suma_container, class_produs_container, class_data_container):
-        """Acum avem nevoie de o modalitate de a calcula suma și produsul containerului de date. Pentru aceasta creează două clase noi care vor moșteni clasa `DataContainer`.
-        - `SumaContainer` va calcula suma elementelor din listă.
-        - `ProdusContainer` va calcula produsul elementelor din listă.
-        Ambele clase vor avea metoda `calculate` care va returna suma sau produsul elementelor.
-        """
-        solution_task_2 = Task2(class_suma_container, class_produs_container)
-        self.status_tasks["task_2"] = solution_task_2.check_task()
-        return "Task 2: Correct! Well done." if self.status_tasks["task_2"] else "Task 2: Incorrect! Please try again."
-
-    def check_task_3(self, class_data_analysis, class_data_container):
-        """Pentru ca instrumentul pe care îl folosim să fie complet vom mai avea nevoie de careva adiții.
-        Creează o clasă `DataAnalysis` care va primi ca input o listă de obiecte de tipul `DataContainer`.
-        - __init__ va inițializa clasa cu lista de obiecte.
-        - `add_container` va permite adăugarea unui nou container în listă.
-        - `__call__` va returna o listă cu valorile maxime ale fiecărui container.
-        """
-        solution_task_3 = Task3(class_data_analysis, class_data_container)
-        self.status_tasks["task_3"] = solution_task_3.check_task()
-        return "Task 3: Correct! Well done." if self.status_tasks["task_3"] else "Task 3: Incorrect! Please try again."
-
-    def check_task_4(self, class_data_statistics, class_data_container):
-        """Pe lângă elementul de analiză a datelor, Microsoft a mai cerut și un element de statistică.
-        Creează o clasă `DataStatistics` care va primi ca input o listă de obiecte de tipul `DataContainer`.
-        - __init__ va inițializa clasa cu lista de obiecte.
-        - `add_container` va permite adăugarea unui nou container în listă.
-        - `mean` va returna media aritmetică a elementelor din toate containerele.
-        - `median` va returna mediana elementelor din toate containerele.
-        - `min` va returna valoarea minimă din toate containerele.
-        - `sum` va returna suma elementelor din toate containerele.
-        """
-        solution_task_4 = Task4(class_data_statistics, class_data_container)
-        self.status_tasks["task_4"] = solution_task_4.check_task()
-        return "Task 4: Correct! Well done." if self.status_tasks["task_4"] else "Task 4: Incorrect! Please try again."
-
-    def check_task_5(self, class_data_filter, class_data_statistics, class_data_container):
-        """Creează o clasă `DataFilter` care va primi ca input o listă de obiecte de tipul `DataContainer`.
-        - __init__ va inițializa clasa cu lista de obiecte.
-        - `add_container` va permite adăugarea unui nou container în listă.
-        - `filter_zeros` va returna o listă cu toate elementele care sunt diferite de 0.
-        - `filter_negatives` va returna o listă cu toate elementele care sunt mai mari sau egale cu 0.
-        - `filter_positives` va returna o listă cu toate elementele care sunt mai mici sau egale cu 0.
-        - `filter_under_mean` va returna o listă cu toate elementele care sunt mai mari decât media aritmetică a tuturor elementelor calculate cu metoda `mean` din clasa `DataStatistics`.
-        """
-        solution_task_5 = Task5(class_data_filter, class_data_statistics, class_data_container)
-        self.status_tasks["task_5"] = solution_task_5.check_task()
-        return "Task 5: Correct! Well done." if self.status_tasks["task_5"] else "Task 5: Incorrect! Please try again."
+    def check_task(self, task_number, *args):
+        """Check a specific task by its number and corresponding classes or functions."""
+        task_class = globals()[f"Task{task_number}"]
+        solution_task = task_class(*args)
+        try:
+            self.status_tasks[f"task_{task_number}"] = solution_task.check_task()
+            if self.status_tasks[f"task_{task_number}"]:
+                return f"Task {task_number}: Correct! Well done."
+            return f"Task {task_number}: Incorrect! Please try again."
+        except Exception as e:
+            return f"Task {task_number}: Error!"
 
     def get_completion_percentage(self):
         completed = sum([1 for task in self.status_tasks if self.status_tasks[task]])
         return f"Your completion percentage is {completed * 100 / len(self.status_tasks)}%"
+
+class DataContainer:
+    def __init__(self, data):
+        """
+        Initializează clasa cu o listă de numere integer.
+        """
+        self.data = data
+
+    def __str__(self):
+        """
+        Returnează lista de numere sub formă de string.
+        """
+        return str(self.data)
+
+    def __len__(self):
+        """
+        Returnează numărul de elemente din listă.
+        """
+        return len(self.data)
+
+    def __getitem__(self, index):
+        """
+        Permite accesarea elementelor din listă folosind indexul.
+        """
+        return self.data[index]
+
+    def __setitem__(self, index, value):
+        """
+        Permite modificarea elementelor din listă folosind indexul.
+        """
+        self.data[index] = value
+
+    def __add__(self, other):
+        """
+        Permite combinarea a două instanțe de DataContainer într-o singură instanță.
+        """
+        if isinstance(other, DataContainer):
+            combined_data = self.data + other.data
+            return DataContainer(combined_data)
+        raise TypeError("Can only add another DataContainer instance.")
