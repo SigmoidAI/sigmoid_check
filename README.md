@@ -4,7 +4,7 @@ sigmoid_check is a library for automation testing of Sigmoid's homeworks. It con
 
 This version of the library is designed to work with the homeworks of the bootcamp "Python Odyssey" of Sigmoid.
 
-# How to use sigmoid_check
+## How to use sigmoid_check
 
 To use sigmoid_check for a specific homework, you need to import the library and call the functions that are relevant to the homework from the specific event that they are assigned to.
 
