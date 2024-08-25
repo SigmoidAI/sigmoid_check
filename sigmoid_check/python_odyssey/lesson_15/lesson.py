@@ -34,9 +34,10 @@ class Task2:
     - `ProdusContainer` va calcula produsul elementelor din listă.
     Ambele clase vor avea metoda `calculate` care va returna suma sau produsul elementelor.
     """
-    def __init__(self, class_suma_container, class_produs_container):
+    def __init__(self, class_suma_container, class_produs_container, class_data_container):
         self.class_suma_container = class_suma_container
         self.class_produs_container = class_produs_container
+        self.class_data_container = class_data_container
 
     def check_task(self):
         try:
