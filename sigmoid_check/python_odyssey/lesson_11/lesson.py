@@ -472,7 +472,7 @@ class Lesson11:
 
     def check_task(self, task_number, func):
         task_class = globals()[f"Task{task_number}"]
-        solution_task = task_class(func)
+        solution_task = task_class(fu nc)
         try:
             self.status_tasks[f"task_{task_number}"] = solution_task.check_task()
             if self.status_tasks[f"task_{task_number}"]:
