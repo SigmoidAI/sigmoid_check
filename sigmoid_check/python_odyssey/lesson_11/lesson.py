@@ -468,7 +468,7 @@ class Task20:
 class Lesson11:
     """Test class for checking the implementation of tasks in lesson 11 of the Python Odyssey Bootcamp."""
     def __init__(self):
-        self.status_tasks = {f"task_{i}": False for i in range(1, 50)}
+        self.status_tasks = {f"task_{i}": False for i in range(1, 21)}
 
     def check_task(self, task_number, func):
         task_class = globals()[f"Task{task_number}"]

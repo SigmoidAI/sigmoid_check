@@ -10,9 +10,11 @@ class Lesson10:
         try:
             student_output = func()
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_1"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_1"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 1: Error - {e}"
         
@@ -23,9 +25,11 @@ class Lesson10:
         try:
             student_output = func()
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_2"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_2"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 2: Error - {e}"
 
@@ -37,9 +41,11 @@ class Lesson10:
         try:
             student_output = func()
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_3"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_3"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 3: Error - {e}"
 
@@ -53,9 +59,11 @@ class Lesson10:
         try:
             student_output = func(matrix)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_4"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_4"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 4: Error - {e}"
         
@@ -69,9 +77,11 @@ class Lesson10:
         try:
             student_output = func(n)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_5"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_5"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 5: Error - {e}"
         
@@ -85,9 +95,11 @@ class Lesson10:
         try:
             student_output = func(n)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_6"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_6"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 6: Error - {e}"
         
@@ -101,9 +113,11 @@ class Lesson10:
         try:
             student_output = func(n)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_7"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_7"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 7: Error - {e}"
 
@@ -116,9 +130,11 @@ class Lesson10:
         try:
             student_output = func(numbers)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_8"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_8"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 8: Error - {e}"
         
@@ -134,9 +150,11 @@ class Lesson10:
             student_output_1 = func(number_1)
             student_output_2 = func(number_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_9"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_9"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 9: Error - {e}"
         
@@ -152,9 +170,11 @@ class Lesson10:
         try:
             student_output = func(name, age, city)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_10"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_10"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 10: Error - {e}"
         
@@ -167,9 +187,11 @@ class Lesson10:
         try:
             student_output = func(numbers)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_11"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_11"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 11: Error - {e}"
         
@@ -182,9 +204,11 @@ class Lesson10:
         try:
             student_output = func(number)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_12"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_12"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 12: Error - {e}"
         
@@ -198,9 +222,11 @@ class Lesson10:
         try:
             student_output = func(number_1, number_2)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_13"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_13"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 13: Error - {e}"
         
@@ -219,9 +245,11 @@ class Lesson10:
             student_output_2 = func(age_2)
             student_output_3 = func(age_3)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2 and student_output_3 == expected_output_3:
-                return True
+                self.status_tasks["task_14"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_14"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 14: Error - {e}"
         
@@ -237,9 +265,11 @@ class Lesson10:
             student_output_1 = func(string_1)
             student_output_2 = func(string_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_15"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_15"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 15: Error - {e}"
         
@@ -252,9 +282,11 @@ class Lesson10:
         try:
             student_output = func(string)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_16"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_16"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 16: Error - {e}"
         
@@ -267,9 +299,11 @@ class Lesson10:
         try:
             student_output = func(string)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_17"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_17"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 17: Error - {e}"
         
@@ -282,9 +316,11 @@ class Lesson10:
         try:
             student_output = func(celsius)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_18"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_18"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 18: Error - {e}"
         
@@ -300,9 +336,11 @@ class Lesson10:
             student_output_1 = func(number_1)
             student_output_2 = func(number_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_19"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_19"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 19: Error - {e}"
         
@@ -319,9 +357,11 @@ class Lesson10:
             student_output_1 = func(number_1)
             student_output_2 = func(number_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_20"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_20"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 20: Error - {e}"
         
@@ -338,9 +378,11 @@ class Lesson10:
             student_output_1 = func(number_1)
             student_output_2 = func(number_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_21"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_21"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 21: Error - {e}"
         
@@ -357,9 +399,11 @@ class Lesson10:
             student_output_1 = func(number_1)
             student_output_2 = func(number_2)
             if student_output_1 == expected_output_1 and student_output_2 == expected_output_2:
-                return True
+                self.status_tasks["task_22"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_22"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 22: Error - {e}"
         
@@ -372,9 +416,11 @@ class Lesson10:
         try:
             student_output = func(number)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_23"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_23"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 23: Error - {e}"
         
@@ -387,23 +433,14 @@ class Lesson10:
         try:
             student_output = func(number)
             if student_output == expected_output:
-                return True
+                self.status_tasks["task_24"] = True
+                return "Exercise 1: Correct! Well done."
             else:
-                return False
+                self.status_tasks["task_24"] = False
+                return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 24: Error - {e}"
 
-    def check_task(self, task_number, func):
-        method_name = f"check_task_{task_number}"
-        method = getattr(self, method_name, None)  # Get the method if it exists
-        if method:
-            self.status_tasks[f"task_{task_number}"] = method(func)
-            if self.status_tasks[f"task_{task_number}"]:
-                return f"Task {task_number}: Correct! Well done."
-            else:
-                return f"Task {task_number}: Incorrect! Please try again."
-        else:
-            return f"Error, such a task number doesn't exist ;("
 
     def get_completion_percentage(self):
         """Return the completion percentage of the tasks"""
