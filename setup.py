@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="sigmoid_check",
-    version="0.0.9",
+    version="0.0.10",
     packages=find_packages(),
     description="A package for checking the implementation of tasks in Sigmoid Courses",
     long_description=long_description,
