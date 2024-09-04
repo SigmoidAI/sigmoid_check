@@ -2,7 +2,7 @@ class Lesson10:
     "Test class for cheking the implementation of the tasks in lesson 10"
     def __init__(self):
         self.status_tasks = {f"task_{i}": False for i in range(1, 25)}
-    
+
     def check_task_1(self, func):
         """Task: Creați o funcție cu numele "task_1" care va returna o listă cu numerele de la 1 la 10
         Utilizați list comprehension."""
@@ -17,7 +17,7 @@ class Lesson10:
                 return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 1: Error - {e}"
-        
+
     def check_task_2(self, func):
         """Task: Creați o funcție cu numele "task_2" care va returna o listă cu pătratele numerelor de la 1 la 10.
         Utilizați list comprehension în proces"""
@@ -49,10 +49,10 @@ class Lesson10:
         except Exception as e:
             return f"Exercise 3: Error - {e}"
 
-
     def check_task_4(self, func):
-        """Task: Creați o funcție cu numele "task_4" care primind ca argument o matrice de liste precum [[1, 2], [3, 4], [5, 6]]
-        va returna o listă aplatizată sau altfel spus o listă cu elementele fiecărei liste , adică [1, 2, 3, 4, 5, 6]
+        """Task: Creați o funcție cu numele "task_4" care primind ca argument o matrice de liste precum [[1, 2], [3, 4],
+        [5, 6]] va returna o listă aplatizată sau altfel spus o listă cu elementele fiecărei liste
+        adică [1, 2, 3, 4, 5, 6]
         """
         matrix = [[1, 2], [3, 4], [5, 6]]
         expected_output = [num for row in matrix for num in row]
@@ -66,14 +66,16 @@ class Lesson10:
                 return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 4: Error - {e}"
-        
+
     def check_task_5(self, func):
-        """Task: Creați o funcție cu numele "task_5" care utilizând list comprehension va returna o listă care conține string-ul "par" sau "impar" pentru fiecare număr de la 1 până la 10.
+        """Task: Creați o funcție cu numele "task_5" care utilizând list comprehension va returna o listă care conține
+        string-ul "par" sau "impar" pentru fiecare număr de la 1 până la 10.
         Funcția va primi ca argument un număr n care va reprezenta numărul până la care se va face maparea.
-        Exemplu: Pentru n=10 rezultatul returnat va fi ["impar", "par", "impar", "par", "impar", "par", "impar", "par", "impar", "par"]
+        Exemplu: Pentru n=10 rezultatul returnat va fi
+        ["impar", "par", "impar", "par", "impar", "par", "impar", "par", "impar", "par"]
         """
         n = 10
-        expected_output = ["par" if i % 2 == 0 else "impar" for i in range(1, n+1)]
+        expected_output = ["par" if i % 2 == 0 else "impar" for i in range(1, n + 1)]
         try:
             student_output = func(n)
             if student_output == expected_output:
@@ -84,14 +86,15 @@ class Lesson10:
                 return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 5: Error - {e}"
-        
+
     def check_task_6(self, func):
-        """Task: Creați o funcție cu numele "task_6" care utilizând list comprehension va returna un dicționar care mappează fiecare număr de la 1 la 5 la cubul său.
+        """Task: Creați o funcție cu numele "task_6" care utilizând list comprehension va returna un dicționar care
+        mappează fiecare număr de la 1 la 5 la cubul său.
         Funcția va primi ca argument un număr n care va reprezenta numărul până la care se va face maparea.
         Exemplu: Pentru n=5 rezultatul returnat va fi {1: 1, 2: 8, 3: 27, 4: 64, 5: 125}
         """
         n = 5
-        expected_output = {i: i**3 for i in range(1, n+1)}
+        expected_output = {i: i**3 for i in range(1, n + 1)}
         try:
             student_output = func(n)
             if student_output == expected_output:
@@ -102,7 +105,7 @@ class Lesson10:
                 return "Exercise 1: Incorrect. Please try again."
         except Exception as e:
             return f"Exercise 6: Error - {e}"
-        
+
     def check_task_7(self, func):
         """Task: Creați o funcție cu numele "task_7" care utilizând list comprehension va returna un set cu multiplii de 3 de la 1 la n, unde n este un argument al funcției.
         Funcția va primi ca argument un număr n care va reprezenta numărul până la care se va face maparea.

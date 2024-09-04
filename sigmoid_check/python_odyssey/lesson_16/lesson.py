@@ -706,7 +706,7 @@ class Task49:
     def check_task(self):
         try:
             @self.func("admin")
-            def dummy_function():
+            def dummy_function(user):
                 return "Done"
             dummy_function("user")
             return False
