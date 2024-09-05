@@ -1,5 +1,7 @@
 ## Contributing to Sigmoid_Check
 
+Recommended Python version: 3.10
+
 Welcome to the **Sigmoid_Check** repository! This guide outlines the process of contributing to our Python library, which automates homework verification. Please read and follow the steps carefully to ensure smooth collaboration.
 
 ### 1. Access Permission
