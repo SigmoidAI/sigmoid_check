@@ -1,6 +1,8 @@
 class Task1:
-    """Primul pas în crearea algoritmului este implementarea unor containere de date care va permite stocarea și manipularea datelor într-un mod mai simplu
-    și eficient. Trebuie să creezi o clasă nouă `DataContainer`. Pentru a manipula datele vom folosi metodele speciale ale clasei.
+    """Primul pas în crearea algoritmului este implementarea unor containere de date care va permite stocarea
+    și manipularea datelor într-un mod mai simplu
+    și eficient. Trebuie să creezi o clasă nouă `DataContainer`.
+    Pentru a manipula datele vom folosi metodele speciale ale clasei.
 
     Clasa va primi ca parametru o listă de numere integer.
     - __init__ initializează clasa cu lista de numere.
@@ -28,8 +30,10 @@ class Task1:
         except:
             return False
 
+
 class Task2:
-    """Acum avem nevoie de o modalitate de a calcula suma și produsul containerului de date. Pentru aceasta creează două clase noi care vor moșteni clasa `DataContainer`.
+    """Acum avem nevoie de o modalitate de a calcula suma și produsul containerului de date. Pentru aceasta creează
+    două clase noi care vor moșteni clasa `DataContainer`.
     - `SumaContainer` va calcula suma elementelor din listă.
     - `ProdusContainer` va calcula produsul elementelor din listă.
     Ambele clase vor avea metoda `calculate` care va returna suma sau produsul elementelor.
@@ -48,6 +52,7 @@ class Task2:
             return True
         except:
             return False
+
 
 class Task3:
     """Pentru ca instrumentul pe care îl folosim să fie complet vom mai avea nevoie de careva adiții.
@@ -71,6 +76,7 @@ class Task3:
             return True
         except:
             return False
+
 
 class Task4:
     """Pe lângă elementul de analiză a datelor, Microsoft a mai cerut și un element de statistică.
@@ -99,6 +105,7 @@ class Task4:
         except:
             return False
 
+
 class Task5:
     """Creează o clasă `DataFilter` care va primi ca input o listă de obiecte de tipul `DataContainer`.
     - __init__ va inițializa clasa cu lista de obiecte.
@@ -106,7 +113,8 @@ class Task5:
     - `filter_zeros` va returna o listă cu toate elementele care sunt diferite de 0.
     - `filter_negatives` va returna o listă cu toate elementele care sunt mai mari sau egale cu 0.
     - `filter_positives` va returna o listă cu toate elementele care sunt mai mici sau egale cu 0.
-    - `filter_under_mean` va returna o listă cu toate elementele care sunt mai mari decât media aritmetică a tuturor elementelor calculate cu metoda `mean` din clasa `DataStatistics`.
+    - `filter_under_mean` va returna o listă cu toate elementele care sunt mai mari decât media aritmetică
+    a tuturor elementelor calculate cu metoda `mean` din clasa `DataStatistics`.
     """
     def __init__(self, class_data_filter, class_data_statistics, class_data_container):
         self.class_data_filter = class_data_filter
@@ -118,7 +126,6 @@ class Task5:
             container1 = self.class_data_container([1, 2, 3, 0, -1, -2])
             container2 = self.class_data_container([4, 5, 6, 0, -3, -4])
             filter = self.class_data_filter([container1, container2])
-            stats = self.class_data_statistics([container1, container2])
             assert sorted(filter.filter_zeros()) == sorted([1, 2, 3, -1, -2, 4, 5, 6, -3, -4])
             assert sorted(filter.filter_negatives()) == sorted([-1, -2, -3, -4])
             assert sorted(filter.filter_positives()) == sorted([1, 2, 3, 0, 4, 5, 6, 0])
@@ -126,6 +133,7 @@ class Task5:
             return True
         except:
             return False
+
 
 class Lesson15:
     """Test class for checking the implementation of tasks in lesson 15 of the Python Odyssey Bootcamp."""
@@ -147,6 +155,7 @@ class Lesson15:
     def get_completion_percentage(self):
         completed = sum([1 for task in self.status_tasks if self.status_tasks[task]])
         return f"Your completion percentage is {completed * 100 / len(self.status_tasks)}%"
+
 
 class DataContainer:
     def __init__(self, data):
