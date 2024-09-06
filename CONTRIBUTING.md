@@ -7,7 +7,7 @@ Welcome to the **Sigmoid_Check** repository! This guide outlines the process of 
 ### 1. Access Permission
 This repository is private, and only those with the necessary permissions can access it. If you have access, you can create branches and make contributions.
 
-### 2. Working on a Ticket 
+### 2. Working on a Ticket
 
 #### Step 1: Create a Branch
 1. Navigate to the **GitHub Projects** section where tickets are listed.
