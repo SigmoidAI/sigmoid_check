@@ -14,6 +14,7 @@ class Task1:
         except:
             return False
 
+
 class Task2:
     """Creează o funcție lambda numită `task2` care verifică dacă un număr este par."""
     def __init__(self, func):
@@ -21,11 +22,12 @@ class Task2:
 
     def check_task(self):
         try:
-            assert self.func(4) == True
-            assert self.func(5) == False
+            assert self.func(4) is True
+            assert self.func(5) is False
             return True
         except:
             return False
+
 
 class Task3:
     """Creează o funcție lambda numită `task3` care înmulțește două numere."""
@@ -40,6 +42,7 @@ class Task3:
         except:
             return False
 
+
 class Task4:
     """Crează o funcție lambda numită `task4` care returnează lungimea unui șir de caractere."""
     def __init__(self, func):
@@ -52,6 +55,7 @@ class Task4:
             return True
         except:
             return False
+
 
 class Task5:
     """Creează o funcție lambda numită `task5` care convertește un șir de caractere în majuscule."""
@@ -66,6 +70,7 @@ class Task5:
         except:
             return False
 
+
 class Task6:
     """Creează o funcție lambda numită `task6` care găsește maximul dintre trei numere."""
     def __init__(self, func):
@@ -78,6 +83,7 @@ class Task6:
             return True
         except:
             return False
+
 
 class Task7:
     """Creează o funcție lambda numită `task7` care concatenează două șiruri de caractere cu un spațiu între ele."""
@@ -92,6 +98,7 @@ class Task7:
         except:
             return False
 
+
 class Task8:
     """Creează o funcție lambda numită `task8` care filtrează numerele impare dintr-o listă și le returnează."""
     def __init__(self, func):
@@ -105,8 +112,10 @@ class Task8:
         except:
             return False
 
+
 class Task9:
-    """Creează o funcție lambda numită `task9` care calculează factorialul unui număr folosind funcția reduce din functools (google it!)."""
+    """Creează o funcție lambda numită `task9` care calculează factorialul unui număr folosind funcția reduce
+    din functools (google it!)."""
     def __init__(self, func):
         self.func = func
 
@@ -117,6 +126,7 @@ class Task9:
             return True
         except:
             return False
+
 
 class Task10:
     """Creează o funcție lambda numită `task10` care sortează o listă de tuple după a doua valoare din fiecare tuple."""
@@ -131,6 +141,7 @@ class Task10:
         except:
             return False
 
+
 class Task11:
     """Creează o funcție lambda numită `task11` care returnează rădăcina pătrată a unui număr."""
     def __init__(self, func):
@@ -144,6 +155,7 @@ class Task11:
         except:
             return False
 
+
 class Task12:
     """Creează o funcție lambda numită `task12` care verifică dacă un șir de caractere este palindrom."""
     def __init__(self, func):
@@ -151,11 +163,12 @@ class Task12:
 
     def check_task(self):
         try:
-            assert self.func("madam") == True
-            assert self.func("hello") == False
+            assert self.func("madam") is True
+            assert self.func("hello") is False
             return True
         except:
             return False
+
 
 class Task13:
     """Creează o funcție lambda numită `task13` care numără numărul de vocale dintr-un șir de caractere."""
@@ -170,6 +183,7 @@ class Task13:
         except:
             return False
 
+
 class Task14:
     """Creează o funcție lambda numită `task14` care returnează inversul unui șir de caractere."""
     def __init__(self, func):
@@ -183,8 +197,10 @@ class Task14:
         except:
             return False
 
+
 class Task15:
-    """Creează o funcție lambda numită `task15` care filtrează toate șirurile de caractere mai lungi de 5 caractere dintr-o listă."""
+    """Creează o funcție lambda numită `task15` care filtrează toate șirurile
+    de caractere mai lungi de 5 caractere dintr-o listă."""
     def __init__(self, func):
         self.func = func
 
@@ -195,6 +211,7 @@ class Task15:
             return True
         except:
             return False
+
 
 class Task16:
     """Creează o funcție lambda numită `task16` care sortează o listă de dicționare după o cheie specificată."""
@@ -210,6 +227,7 @@ class Task16:
         except:
             return False
 
+
 class Task17:
     """Creează o funcție lambda numită `task17` care găsește cel mai mare divizor comun al două numere."""
     def __init__(self, func):
@@ -222,6 +240,7 @@ class Task17:
             return True
         except:
             return False
+
 
 class Task18:
     """Creează o funcție lambda numită `task18` care calculează suma pătratelor numerelor pare dintr-o listă."""
@@ -236,6 +255,7 @@ class Task18:
         except:
             return False
 
+
 class Task19:
     """Creează o funcție lambda numită `task19` care verifică dacă un an dat este bisect."""
     def __init__(self, func):
@@ -243,11 +263,12 @@ class Task19:
 
     def check_task(self):
         try:
-            assert self.func(2020) == True
-            assert self.func(2019) == False
+            assert self.func(2020) is True
+            assert self.func(2019) is False
             return True
         except:
             return False
+
 
 class Task20:
     """Creează o funcție lambda numită `task20` care găsește cel mai lung cuvânt dintr-o listă de cuvinte."""
@@ -264,6 +285,7 @@ class Task20:
 
 # Generators
 
+
 class Task21:
     """Creează un generator numit `task21` care generează numere de la 1 la 10."""
     def __init__(self, func):
@@ -276,6 +298,7 @@ class Task21:
             return True
         except:
             return False
+
 
 class Task22:
     """Creează un generator numit `task22` care generează pătratele numerelor de la 1 la 10."""
@@ -290,6 +313,7 @@ class Task22:
         except:
             return False
 
+
 class Task23:
     """Creează un generator numit `task23` care generează caracterele unui string primit ca input unul câte unul."""
     def __init__(self, func):
@@ -302,6 +326,7 @@ class Task23:
             return True
         except:
             return False
+
 
 class Task24:
     """Creează un generator numit `task24` care generează numere pare până la un limită dată ca input."""
@@ -316,6 +341,7 @@ class Task24:
         except:
             return False
 
+
 class Task25:
     """Creează un generator numit `task25` care primește ca input un număr n și generează primele n numere Fibonacci."""
     def __init__(self, func):
@@ -328,6 +354,7 @@ class Task25:
             return True
         except:
             return False
+
 
 class Task26:
     """Creează un generator numit `task26` care generează numere prime până la o limită dată ca input."""
@@ -342,8 +369,10 @@ class Task26:
         except:
             return False
 
+
 class Task27:
-    """Creează un generator numit `task27` care generează numere într-un interval specificat start, și end cu un pas dat."""
+    """Creează un generator numit `task27` care generează numere într-un interval specificat start,
+    și end cu un pas dat."""
     def __init__(self, func):
         self.func = func
 
@@ -354,6 +383,7 @@ class Task27:
             return True
         except:
             return False
+
 
 class Task28:
     """Creează un generator numit `task28` care generează toate subșirurile unui șir oferit sub formă de string.
@@ -372,6 +402,7 @@ class Task28:
         except:
             return False
 
+
 class Task29:
     """Creează un generator numit `task29` care generează factorialul numerelor de la 1 la n primind n ca input."""
     def __init__(self, func):
@@ -385,8 +416,10 @@ class Task29:
         except:
             return False
 
+
 class Task30:
-    """Creează un generator numit `task30` care generează cifrele unui număr în ordine inversă primind numărul ca input."""
+    """Creează un generator numit `task30`
+    care generează cifrele unui număr în ordine inversă primind numărul ca input."""
     def __init__(self, func):
         self.func = func
 
@@ -398,11 +431,13 @@ class Task30:
         except:
             return False
 
+
 class Task31:
     """Creează un generator numit `task31` care generează toate combinațiile posibile ale elementelor dintr-o listă.
     Exemplu:
     pentru input-ul [1, 2, 3, 4]
-    output-ul va fi: (1,), (2,), (3,), (4,), (1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4), (1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4), (1, 2, 3, 4)
+    output-ul va fi: (1,), (2,), (3,), (4,), (1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4), (1, 2, 3), (1, 2, 4),
+    (1, 3, 4), (2, 3, 4), (1, 2, 3, 4)
     """
     def __init__(self, func):
         self.func = func
@@ -420,6 +455,7 @@ class Task31:
         except:
             return False
 
+
 class Task32:
     """Creează un generator numit `task32` care generează suma curentă a unei liste de numere primite ca input."""
     def __init__(self, func):
@@ -433,8 +469,11 @@ class Task32:
         except:
             return False
 
+
 class Task33:
-    """Creează un generator numit `task33` care generează primele n termeni ai unei secvențe aritmetice primind a, d și n ca input unde a este primul termen, d este diferența sau pasul de creștere și n este numărul de termeni.
+    """Creează un generator numit `task33` care generează primele n termeni ai unei secvențe aritmetice
+    primind a, d și n ca input unde a este primul termen,
+    d este diferența sau pasul de creștere și n este numărul de termeni.
     Exemplu:
     pentru input-ul a=1, d=2, n=5
     output-ul va fi: 1, 3, 5, 7, 9
@@ -450,6 +489,7 @@ class Task33:
         except:
             return False
 
+
 class Task34:
     """Creează un generator numit `task34` care generează puterile lui 2 până la o limită dată ca input (inclusiv)."""
     def __init__(self, func):
@@ -463,8 +503,10 @@ class Task34:
         except:
             return False
 
+
 class Task35:
-    """Creează un generator numit `task35` care generează numere într-o secvență geometrică infinită primind a și r ca input unde a este primul termen și r este rația.
+    """Creează un generator numit `task35` care generează numere într-o
+    secvență geometrică infinită primind a și r ca input unde a este primul termen și r este rația.
     Exemplu:
     pentru input-ul a=2, r=3
     output-ul va fi: 2, 6, 18, 54, 162, ...
@@ -480,6 +522,7 @@ class Task35:
             return True
         except:
             return False
+
 
 class Task36:
     """Creează un generator numit `task36` care generează permutările unei liste primite ca input.
@@ -498,6 +541,7 @@ class Task36:
         except:
             return False
 
+
 class Task37:
     """Creează un generator numit `task37` care generează toți factorii primi ai unui număr dat ca input."""
     def __init__(self, func):
@@ -511,8 +555,10 @@ class Task37:
         except:
             return False
 
+
 class Task38:
-    """Creează un generator numit `task38` care generează reprezentarea binară a numerelor de la 1 la n primind n ca input."""
+    """Creează un generator numit `task38` care generează reprezentarea binară
+    a numerelor de la 1 la n primind n ca input."""
     def __init__(self, func):
         self.func = func
 
@@ -523,6 +569,7 @@ class Task38:
             return True
         except:
             return False
+
 
 class Task39:
     """Creează un generator numit `task39` care generează toate anagramele unui șir dat ca input.
@@ -541,13 +588,15 @@ class Task39:
         except:
             return False
 
+
 class Task40:
-    """Creează un generator numit `task40` care generează termenii unei serii matematice simple. 
+    """Creează un generator numit `task40` care generează termenii unei serii matematice simple.
     De exemplu, acest generator va produce termenii unei serii în care fiecare termen este dat de formula:
 
     termen = (-1)^n / n!
 
-    Aici, n este indexul termenului (începând de la 0), iar n! (n factorial) este produsul tuturor numerelor întregi pozitive până la n.
+    Aici, n este indexul termenului (începând de la 0), iar n! (n factorial) este produsul tuturor numerelor întregi
+    pozitive până la n.
     """
     def __init__(self, func):
         self.func = func
@@ -563,8 +612,10 @@ class Task40:
             return False
 # Decorators
 
+
 class Task41:
-    """Creează un decorator numit `task41` care afișează timpul de execuție al unei funcții în formatul "Execution time: x seconds"."""
+    """Creează un decorator numit `task41` care afișează timpul de execuție al unei funcții în formatul
+    "Execution time: x seconds"."""
     def __init__(self, func):
         self.func = func
 
@@ -579,6 +630,7 @@ class Task41:
             return True
         except:
             return False
+
 
 class Task42:
     """Creează un decorator numit `task42` care afișează mesaje "Before" și "After" în jurul apelului unei funcții."""
@@ -596,8 +648,10 @@ class Task42:
         except:
             return False
 
+
 class Task43:
-    """Creează un decorator numit `task43` care memorează rezultatele unei funcții într-un dicționar `cache` pentru a le returna direct dacă aceleași argumente sunt folosite din nou."""
+    """Creează un decorator numit `task43` care memorează rezultatele unei funcții
+    într-un dicționar `cache` pentru a le returna direct dacă aceleași argumente sunt folosite din nou."""
     def __init__(self, func):
         self.func = func
 
@@ -614,8 +668,10 @@ class Task43:
         except:
             return False
 
+
 class Task44:
-    """Creează un decorator numit `task44` care numără de câte ori o funcție este apelată. La fiecare apel, afișează numărul de apeluri în formatul "Count: x"."""
+    """Creează un decorator numit `task44` care numără de câte ori o funcție este apelată.
+    La fiecare apel, afișează numărul de apeluri în formatul "Count: x"."""
     def __init__(self, func):
         self.func = func
 
@@ -631,6 +687,7 @@ class Task44:
             return True
         except:
             return False
+
 
 class Task45:
     """Creează un decorator numit `task45` care convertește rezultatul unei funcții în majuscule."""
@@ -648,8 +705,10 @@ class Task45:
         except:
             return False
 
+
 class Task46:
-    """Creează un decorator numit `task46` care reîncearcă o funcție dacă aceasta aruncă o excepție. Dacă funcția aruncă o excepție, decoratorul va încerca să o apeleze din nou de 3 ori."""
+    """Creează un decorator numit `task46` care reîncearcă o funcție dacă aceasta aruncă o excepție.
+    Dacă funcția aruncă o excepție, decoratorul va încerca să o apeleze din nou de 3 ori."""
     def __init__(self, func):
         self.func = func
 
@@ -663,8 +722,10 @@ class Task46:
         except ValueError:
             return True
 
+
 class Task47:
-    """Creează un decorator numit `task47` care adaugă o valoare specificată la valoarea returnată de o funcție primind valoarea ca input."""
+    """Creează un decorator numit `task47` care adaugă o valoare specificată la valoarea returnată
+    de o funcție primind valoarea ca input."""
     def __init__(self, func):
         self.func = func
 
@@ -679,8 +740,10 @@ class Task47:
         except:
             return False
 
+
 class Task48:
-    """Creează un decorator numit `task48` care validează tipurile argumentelor primite de o funcție și aruncă o excepție `TypeError` dacă tipurile nu sunt cele așteptate."""
+    """Creează un decorator numit `task48` care validează tipurile argumentelor primite de o funcție
+    și aruncă o excepție `TypeError` dacă tipurile nu sunt cele așteptate."""
     def __init__(self, func):
         self.func = func
 
@@ -695,8 +758,10 @@ class Task48:
         except:
             return False
 
+
 class Task49:
-    """Creează un decorator numit `task49` care asigură că o funcție este apelată doar de utilizatori cu un anumit rol. Utilizând decoratorul, vei specifica rolul necesar pentru a apela funcția.
+    """Creează un decorator numit `task49` care asigură că o funcție este apelată doar de utilizatori cu un anumit rol.
+    Utilizând decoratorul, vei specifica rolul necesar pentru a apela funcția.
 
     Aceasta va arunca o excepție `PermissionError` dacă utilizatorul nu are rolul specificat.
     """
