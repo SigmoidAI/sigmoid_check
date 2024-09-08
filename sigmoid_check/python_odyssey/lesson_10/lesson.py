@@ -446,3 +446,22 @@ class Lesson10:
         """Return the completion percentage of the tasks"""
         completed = sum([1 for task in self.status_tasks if self.status_tasks[task]])
         return f"Your completion percentage is {completed * 100 / len(self.status_tasks)}%"
+
+
+def show_help():
+    help_text = """
+    Welcome to the Exercise Testing Library!
+
+    This library is designed to help you test your solutions to various exercises.
+
+    How to Use:
+    - Each class in this library corresponds to a specific lesson.
+    - To test your solution, instantiate the class and call the `check_task_task-number` method, passing your function as an argument.
+
+    Example:
+        lesson = Lesson10()
+        print(lesson.check_task_1(my_function))
+
+    Enjoy the process!
+    """
+    print(help_text)
