@@ -323,3 +323,15 @@ dictionary.
 288. create a function `how_many_days_since` that takes a string `date_to_compare` in the format "YYYY-MM-DD" and returns the number of days since that date.
 289. create a function `get_earliest_date` that takes a list of string dates in the format "YYYY-MM-DD" and returns the earliest date.
 290. create a function `check_if_year_is_leap` that checks if a given year is a leap year.
+### special methods
+291. create a class named `Movie` with attributes `title`, `director`, and `duration`, and implement the special methods `__str__`, `__len__`, and `__eq__` to provide meaningful comparisons.
+292. create a class called `Point` that represents a point with `x` and `y` coordinates; implement methods for equality comparison and addition of two points.
+293. create a class named `ShoppingCart` that has a list of items; implement the `__len__` method to return the number of items in the cart.
+294. create a class `Time` that has `hours`, `minutes`, and `seconds` attributes, and implement the `__add__` method to add two `Time` objects together.
+295. create a class `Image` that has attributes for `width` and `height`, implementing a method to return the area of the image when `len()` is called on it.
+### file handling
+296. create a function that reads a file and counts the number of words in it, handling any file-related errors gracefully.
+297. create a function that writes a list of strings to a text file, with each string on a new line.
+298. create a function that appends data to a CSV file and then reads the entire content back, printing it to the console.
+299. create a function that reads a JSON file and extracts a specific key’s value, returning it or printing an error if the file doesn’t exist.
+300. create a function that displays the contents of a binary file in a human-readable hexadecimal format.
