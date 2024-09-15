@@ -247,3 +247,79 @@ dictionary.
 223. given a variable `number`, use a try/except block to convert it to an integer and assign "Invalid number" to the variable `number_status` if a ValueError occurs.
 224. given a numeric value in string format in variable `number`, use a try/except block to convert it to an integer and assign "Invalid number" to the variable `number_status` if a ValueError occurs.
 225. given a variable `x`, use a try/except block to assign "positive" to the variable `number_status` if `x` is positive and "negative" if `x` is negative, handling the `AssertionError` with the message "another error".
+### functions
+226. create a function named `multiply` that takes two numbers as parameters and returns their product.
+227. create a function named `is_even` that takes a number as a parameter and returns True if the number is even, otherwise returns False.
+228. create a function called `find_max` that takes three numbers as parameters and returns the largest of them.
+229. create a function named `reverse_string` that takes a string as a parameter and returns the reversed version of that string.
+230. create a function named `factorial` that takes a number as a parameter and returns its factorial.
+231. create a function called `count_vowels` that takes a string as a parameter and returns the number of vowels in the string.
+232. create a function called `area_of_circle` that takes the radius as a parameter and returns the area of the circle.
+233. create a function named `fibonacci` that takes a number `n` and returns the first `n` Fibonacci numbers in a list, where the first two numbers are 0 and 1.
+234. create a function named `is_prime` that takes a number and returns True if it is a prime number, otherwise False.
+235. create a function called `sum_of_squares` that takes a list of numbers and returns the sum of their squares.
+### positional/keyword arguments
+236. create a function `describe_person` that takes a `name` and `age` as positional arguments and prints "Name: [name], Age: [age]".
+237. create a function `product` that takes two numbers and an optional parameter for a message, printing the message along with the product of the two numbers: "[message]: [product]".
+238. create a function `favorite_foods` that takes a person's name and a variable number of food items, returning a string that lists all their favorite foods: "[name]'s favorite foods are [food1], [food2], [food3].".
+239. create a function `full_name` that takes a first name and last name as keyword arguments and returns the full name as a string, with a space between the names.
+240. create a function `print_details` that takes any number of keyword arguments and prints each key-value pair in a formatted manner, like "Key: Value, Key: Value, Key: Value".
+### Default Parameters
+241. create a function `send_email` that takes a recipient address and an optional subject (default to "No Subject") and returns a formatted email string, like "To: [recipient], Subject: [subject]".
+242. create a function `calculate_discount` that takes a price and an optional discount rate (default to 0), returning the final price after applying the discount.
+243. create a function `create_user` that takes a username and optional parameters for age and location, returning a user profile string, like "Username: [username], Age: [age], Location: [location]".
+244. create a function `increment` that takes a number and an optional step value (default to 1), returning the incremented value.
+245. create a function `profile` that takes a first name, last name, and defaults the age to 18, returning a profile string, like "First Name: [first], Last Name: [last], Age: [age]".
+### *args & **kwargs
+246. create a function `concatenate_strings` that accepts any number of string arguments and returns a single concatenated string.
+247. create a function `print_scores` that accepts any number of scores and returns a formatted string with all the scores, like "Scores: [score1], [score2], [score3].".
+248. create a function called `merge_dicts` that accepts multiple dictionaries as keyword arguments and returns a single merged dictionary.
+249. create a function named `calculate_average` that takes any number of scores and returns the average.
+250. create a function named `compute_class_average` that takes as input any number of dictionaries containing the name as key and a list of scores as value, and returns a dictionary with the average score of all the students.
+### lambda functions
+251. create a lambda function that adds two numbers and assign it to a variable `add_lambda`.
+252. use a lambda function to create a function that squares a given number and assigns it to a variable `square_lambda`.
+253. given a list of numbers `random_numbers`, then use a lambda function to filter out the even numbers from the list and assign the result to a variable `even_numbers`.
+254. given a list of strings `random_strings`, then use a lambda function to sort the strings by their lengths and assign the result to a variable `sorted_strings`.
+255. create a lambda function that takes a person’s age and returns "adult" if over 18, and "minor" if 18 or younger and assign it to a variable `age_status`.
+### decorators
+256. create a decorator named `log_execution` that prints "Function started" before executing any function it decorates.
+257. create a decorator that measures the execution time of a function and returns that time along with the function's result.
+258. create a decorator named `repeat` that repeats the function call a specified number of times.
+259. create a decorator that returns a dictionary with the function's input arguments and output result as a key-value pair.
+260. create a simple class decorator that adds a new attribute to the class named `initialized` with the value `True`.
+### oop (object-oriented programming)
+261. create a class named `Car` that has attributes `make`, `model`, `status`, and `year`, and a method `start` that changes the status to "running".
+262. create a class named `Rectangle` that has `width` and `height` as attributes, and a method to calculate the area named `calculate_area` that returns the area.
+263. create a class `Person` that has the attributes `name` and `age`, and a method `get_info` that returns a formatted string with the person's name and age (e.g., "Name: [name], Age: [age]").
+264. create a class `Animal` with a method `speak`, then create subclasses like `Dog` and `Cat` that implement this method that will return a string like "Woof" or "Meow".
+265. create a class `Security` that uses private attributes for `username` and `password`, and methods to set and get these attributes securely.
+266. create a class `BankAccount` that includes methods to `deposit`, `withdraw`, and `check` the balance, while ensuring the balance cannot drop below zero.
+267. create an abstract class `Shape` with an abstract method `area`, and implement subclasses like `Circle` and `Square`.
+268. create a class `Parent` and a subclass `Child` that inherits from `Parent`, with a method `display` that prints "Parent" from the parent class and "Child" from the child class.
+269. create a class `Copied` with a method that returns the number of instances created, and a subclass `Derived` that inherits from `Copied` and adds a method to return the number of instances created in the subclass.
+270. create a class `Employee` with attributes `name`, `salary`, and `role`, and a method `get_data` that returns a dictionary with the employee's information as key-value pairs.
+### file handling
+271. create a function `write_to_file` that given a `string_value` and a `filename`, writes the string to a the filename in the current directory.
+272. create a function `read_from_file` that given a `filename`, reads the contents of the file and returns it as a string.
+273. create a function that given a `filename` appends a line to the file and prints the updated file's contents.
+274. create a function `count_lines` that given a `filename`, counts the number of lines in the file and returns the count.
+275. create a function `copy_file` that given a `source` and `destination` filename, copies the contents of the source file to the destination file.
+### error handling
+276. create a function `division_of` that takes two numbers and handles potential ZeroDivisionError when performing division by returning "Cannot divide by zero" if the second number is zero and the result otherwise.
+277. create a function `conversion_function` that attempts to convert input to an integer, handling any ValueError appropriately by returning "Invalid input" and the converted integer otherwise.
+278. create a function `input_list` that reads an element from a list and handles IndexError if the index is out of range by returning "Index out of range" and the element otherwise.
+279. create a function `input_dicitonary` that uses try/except to check if a key exists in a dictionary before accessing it, returning "Key not found" if the key is not present and the value otherwise.
+280. create a function `file_opener` that handles exceptions related to opened files using the `open` function and returns "File not found" if the file does not exist and a string with the file's contents otherwise.
+### iterators and generators
+281. create a generator function `count_up_to` that yields numbers starting from 1 up to a given number.
+282. create a generator function `fibonacci_generator` that yields Fibonacci numbers indefinitely.
+283. create an iterator that returns squares of numbers in a provided list.
+284. create a generator that yields random numbers between specified bounds.
+285. create a function that uses a generator to read lines from a file on demand.
+### dates and times
+286. create a function `return_current_date_and_time` that returns the current date and time in the format "YYYY-MM-DD HH:MM:SS".
+287. create a function `return_current_date` that formats and returns the current date as "YYYY-MM-DD".
+288. create a function `how_many_days_since` that takes a string `date_to_compare` in the format "YYYY-MM-DD" and returns the number of days since that date.
+289. create a function `get_earliest_date` that takes a list of string dates in the format "YYYY-MM-DD" and returns the earliest date.
+290. create a function `check_if_year_is_leap` that checks if a given year is a leap year.
