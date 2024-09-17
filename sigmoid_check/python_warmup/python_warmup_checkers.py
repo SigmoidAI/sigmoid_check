@@ -276,6 +276,59 @@ check_exercise_21 = conditional_test_case_checker([
 ])
 # create a variable `x` and assign it the value 42; create a variable `y` and assign it the value 9; create a variable `z` and assign it the value 7;
 check_exercise_22 = variable_checker({"x": 42, "y": 9, "z": 7})
+# create a dictionary called `computations` with the keys "add_x_y", "add_x_z", "add_y_z", "sub_x_y", "sub_x_z", "sub_y_z", "mul_x_y", "mul_x_z", "mul_y_z", "div_x_y", "div_x_z", "div_y_z", "mod_x_y", "mod_x_z", "mod_y_z", "pow_x_y", "pow_x_z", "pow_y_z" and the values the results of the respective operations;
+check_exercise_23 = input_output_checker([
+    {
+        'input': {'x': 1, 'y': 1, 'z': 1},
+        'expected': {
+            'computations': {
+                "add_x_y": 2,
+                "add_x_z": 2,
+                "add_y_z": 2,
+                "sub_x_y": 0,
+                "sub_x_z": 0,
+                "sub_y_z": 0,
+                "mul_x_y": 1,
+                "mul_x_z": 1,
+                "mul_y_z": 1,
+                "div_x_y": 1.0,
+                "div_x_z": 1.0,
+                "div_y_z": 1.0,
+                "mod_x_y": 0,
+                "mod_x_z": 0,
+                "mod_y_z": 0,
+                "pow_x_y": 1,
+                "pow_x_z": 1,
+                "pow_y_z": 1
+            }
+        }
+    },
+    {
+        'input': {'x': 2, 'y': 3, 'z': 4},
+        'expected': {
+            'computations': {
+                "add_x_y": 5,
+                "add_x_z": 6,
+                "add_y_z": 7,
+                "sub_x_y": -1,
+                "sub_x_z": -2,
+                "sub_y_z": -1,
+                "mul_x_y": 6,
+                "mul_x_z": 8,
+                "mul_y_z": 12,
+                "div_x_y": 0.6666666666666666,
+                "div_x_z": 0.5,
+                "div_y_z": 0.75,
+                "mod_x_y": 2,
+                "mod_x_z": 2,
+                "mod_y_z": 3,
+                "pow_x_y": 8,
+                "pow_x_z": 16,
+                "pow_y_z": 81
+            }
+        }
+    },
+])
 
 __all__ = [
     'check_exercise_1',
@@ -295,5 +348,11 @@ __all__ = [
     'check_exercise_15',
     'check_exercise_16',
     'check_exercise_17',
+    'check_exercise_18',
+    'check_exercise_19',
+    'check_exercise_20',
+    'check_exercise_21',
+    'check_exercise_22',
+    'check_exercise_23',
 ]
 
