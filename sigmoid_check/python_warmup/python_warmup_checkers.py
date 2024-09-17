@@ -2,34 +2,50 @@ import sys
 from io import StringIO
 from functools import wraps
 
-def create_checker(expected_output=None, expected_variables=None, test_cases=None):
+def create_checker(expected_output=None, expected_variables=None, test_cases=None, conditional_test_cases=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if test_cases:
+            if test_cases or conditional_test_cases:
                 all_passed = True
                 implemented = False
-                for i, (inputs, expected) in enumerate(test_cases, 1):
+                
+                if test_cases:
+                    cases = test_cases
+                else:
+                    cases = conditional_test_cases
+
+                for i, case in enumerate(cases, 1):
                     old_stdout = sys.stdout
                     sys.stdout = captured_output = StringIO()
 
                     try:
-                        func(*inputs)
+                        if test_cases:
+                            inputs, expected = case
+                            func(*inputs)
+                        else:
+                            inputs, condition, expected = case
+                            func(*inputs)
+
                         output = captured_output.getvalue().strip()
                         sys.stdout = old_stdout
 
                         if output:
                             implemented = True
 
-                        if str(output) == str(expected):
-                            print(f"✅ Test case {i} passed!")
+                        if test_cases:
+                            if str(output) != str(expected):
+                                all_passed = False
                         else:
-                            print(f"❌ Test case {i} failed.")
-                            all_passed = False
+                            if condition(*inputs):
+                                if str(output) != str(expected):
+                                    all_passed = False
+                            else:
+                                if output:
+                                    all_passed = False
 
                     except Exception as e:
                         sys.stdout = old_stdout
-                        print(f"❌ Test case {i} failed due to an error.")
                         all_passed = False
 
                 if not implemented:
@@ -37,7 +53,7 @@ def create_checker(expected_output=None, expected_variables=None, test_cases=Non
                 elif all_passed:
                     print("🎉 Congratulations! All test cases passed.")
                 else:
-                    print("❗ Some test cases failed. Keep working on your solution.")
+                    print("❗ The implementation is incorrect. Please review your solution.")
             else:
                 old_stdout = sys.stdout
                 sys.stdout = captured_output = StringIO()
@@ -104,7 +120,11 @@ check_exercise_6 = create_checker(test_cases=[
 ])
 # create a variable called "is_old" and assign it the value True;
 check_exercise_7 = create_checker(expected_variables={"is_old": True})
-
+# print the text "John is old" to the console if `is_old` is True;
+check_exercise_8 = create_checker(conditional_test_cases=[
+    ((True,), lambda x: x, "John is old"),
+    ((False,), lambda x: not x, ""),
+])
 
 __all__ = [
     'check_exercise_1',
@@ -114,4 +134,5 @@ __all__ = [
     'check_exercise_5',
     'check_exercise_6',
     'check_exercise_7',
+    'check_exercise_8',
 ]
