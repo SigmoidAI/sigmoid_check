@@ -238,7 +238,44 @@ check_exercise_15 = conditional_test_case_checker([
     ((False, True), lambda x, y: x or y, "John is tall or old"),
     ((False, False), lambda x, y: x or y, ""),
 ])
-
+# print the text "John is not tall" to the console if `is_tall` is False;
+check_exercise_16 = conditional_test_case_checker([
+    ((True,), lambda x: not x, ""),
+    ((False,), lambda x: not x, "John is not tall"),
+])
+# print the text "John is not old" to the console if `is_old` is False;
+check_exercise_17 = conditional_test_case_checker([
+    ((True,), lambda x: not x, ""),
+    ((False,), lambda x: not x, "John is not old"),
+])
+# print the text "John is tall and not old" to the console if `is_tall` is True and `is_old` is False;
+check_exercise_18 = conditional_test_case_checker([
+    ((True, True), lambda x, y: x and not y, ""),
+    ((True, False), lambda x, y: x and not y, "John is tall and not old"),
+    ((False, True), lambda x, y: x and not y, ""),
+    ((False, False), lambda x, y: x and not y, ""),
+])
+# print the text "John is not tall and old" to the console if `is_tall` is False and `is_old` is True;
+check_exercise_19 = conditional_test_case_checker([
+    ((True, True), lambda x, y: not x and y, ""),
+    ((True, False), lambda x, y: not x and y, ""),
+    ((False, True), lambda x, y: not x and y, "John is not tall and old"),
+    ((False, False), lambda x, y: not x and y, ""),
+])
+# print the text "John is older than 30" to the console if `age` is greater than 30;
+check_exercise_20 = conditional_test_case_checker([
+    ((25,), lambda x: x > 30, ""),
+    ((30,), lambda x: x > 30, ""),
+    ((35,), lambda x: x > 30, "John is older than 30"),
+])
+# print the text "John is younger than 30" to the console if `age` is less than 30;
+check_exercise_21 = conditional_test_case_checker([
+    ((25,), lambda x: x < 30, "John is younger than 30"),
+    ((30,), lambda x: x < 30, ""),
+    ((35,), lambda x: x < 30, ""),
+])
+# create a variable `x` and assign it the value 42; create a variable `y` and assign it the value 9; create a variable `z` and assign it the value 7;
+check_exercise_22 = variable_checker({"x": 42, "y": 9, "z": 7})
 
 __all__ = [
     'check_exercise_1',
@@ -256,5 +293,7 @@ __all__ = [
     'check_exercise_13',
     'check_exercise_14',
     'check_exercise_15',
+    'check_exercise_16',
+    'check_exercise_17',
 ]
 
