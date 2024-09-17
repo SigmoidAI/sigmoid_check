@@ -2,129 +2,243 @@ import sys
 from io import StringIO
 from functools import wraps
 
-def create_checker(expected_output=None, expected_variables=None, test_cases=None, conditional_test_cases=None):
+def output_checker(expected_output):
+    """
+    Decorator for checking if the function output matches the expected output.
+
+    Args:
+        expected_output (str): The expected output of the function.
+
+    Returns:
+        function: Decorated function.
+    """
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if test_cases or conditional_test_cases:
-                all_passed = True
-                implemented = False
-                
-                if test_cases:
-                    cases = test_cases
+            old_stdout = sys.stdout
+            sys.stdout = captured_output = StringIO()
+
+            try:
+                func(*args, **kwargs)
+                output = captured_output.getvalue().strip()
+                sys.stdout = old_stdout
+
+                if str(output) == str(expected_output):
+                    print("✅ Great job! Exercise completed successfully.")
                 else:
-                    cases = conditional_test_cases
+                    print("❗ The implementation is incorrect or the exercise was not implemented.")
+            except Exception:
+                sys.stdout = old_stdout
+                print("❗ The implementation is incorrect or the exercise was not implemented.")
 
-                for i, case in enumerate(cases, 1):
-                    old_stdout = sys.stdout
-                    sys.stdout = captured_output = StringIO()
+        return wrapper
+    return decorator
 
-                    try:
-                        if test_cases:
-                            inputs, expected = case
-                            func(*inputs)
-                        else:
-                            inputs, condition, expected = case
-                            func(*inputs)
+def variable_checker(expected_variables):
+    """
+    Decorator for checking if the function returns the expected variables.
 
-                        output = captured_output.getvalue().strip()
-                        sys.stdout = old_stdout
+    Args:
+        expected_variables (dict): A dictionary of expected variable names and their values.
 
-                        if output:
-                            implemented = True
-
-                        if test_cases:
-                            if str(output) != str(expected):
-                                all_passed = False
-                        else:
-                            if condition(*inputs):
-                                if str(output) != str(expected):
-                                    all_passed = False
-                            else:
-                                if output:
-                                    all_passed = False
-
-                    except Exception as e:
-                        sys.stdout = old_stdout
-                        all_passed = False
-
-                if not implemented:
-                    print("❌ The exercise has not been implemented yet. Please complete the exercise.")
-                elif all_passed:
-                    print("🎉 Congratulations! All test cases passed.")
+    Returns:
+        function: Decorated function.
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                result = func(*args, **kwargs)
+                if not isinstance(result, dict):
+                    print("❗ The implementation is incorrect or the exercise was not implemented.")
+                    return
+                if all(result.get(var_name) == expected_value for var_name, expected_value in expected_variables.items()):
+                    print("✅ Great job! Exercise completed successfully.")
                 else:
-                    print("❗ The implementation is incorrect. Please review your solution.")
-            else:
+                    print("❗ The implementation is incorrect or the exercise was not implemented.")
+            except Exception:
+                print("❗ The implementation is incorrect or the exercise was not implemented.")
+
+        return wrapper
+    return decorator
+
+def test_case_checker(test_cases):
+    """
+    Decorator for checking multiple test cases.
+
+    Args:
+        test_cases (list): A list of tuples, each containing input arguments and expected output.
+
+    Returns:
+        function: Decorated function.
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            all_passed = True
+            for inputs, expected in test_cases:
                 old_stdout = sys.stdout
                 sys.stdout = captured_output = StringIO()
 
                 try:
-                    result = func(*args, **kwargs)
+                    func(*inputs)
                     output = captured_output.getvalue().strip()
                     sys.stdout = old_stdout
 
-                    if expected_variables is not None:
-                        if not isinstance(result, dict):
-                            print("❌ The exercise function should return a dictionary of variables to check.")
-                            return
-                        for var_name, expected_value in expected_variables.items():
-                            if var_name not in result:
-                                print(f"❌ The variable '{var_name}' is missing.")
-                            elif result[var_name] == expected_value:
-                                print(f"✅ Great job! The variable '{var_name}' has the correct value: {result[var_name]}")
-                            else:
-                                print(f"❌ Oops! The variable '{var_name}' has the wrong value. Expected: {expected_value}, Got: {result[var_name]}")
-
-                    elif expected_output is not None:
-                        expected_str = str(expected_output)
-                        output_str = str(output)
-                        if output_str == expected_str:
-                            print(f"✅ Great job! The output is correct: {output}")
-                        else:
-                            print(f"❌ Oops! The output is incorrect. Expected: {expected_output}, Got: {output}")
-
-                    else:
-                        print(f"Function output: {output}")
-
-                except NameError:
+                    if str(output) != str(expected):
+                        all_passed = False
+                        break
+                except Exception:
                     sys.stdout = old_stdout
-                    print("❌ The exercise has not been implemented yet. Please complete the exercise.")
-                except Exception as e:
-                    sys.stdout = old_stdout
-                    print(f"❌ An error occurred: {str(e)}")
+                    all_passed = False
+                    break
 
-            return None
+            if all_passed:
+                print("✅ Great job! Exercise completed successfully.")
+            else:
+                print("❗ The implementation is incorrect or the exercise was not implemented.")
+
+        return wrapper
+    return decorator
+
+def conditional_test_case_checker(conditional_test_cases):
+    """
+    Decorator for checking conditional test cases.
+
+    Args:
+        conditional_test_cases (list): A list of tuples, each containing input arguments, a condition function, and expected output.
+
+    Returns:
+        function: Decorated function.
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            all_passed = True
+            for inputs, condition, expected in conditional_test_cases:
+                old_stdout = sys.stdout
+                sys.stdout = captured_output = StringIO()
+
+                try:
+                    func(*inputs)
+                    output = captured_output.getvalue().strip()
+                    sys.stdout = old_stdout
+
+                    if condition(*inputs):
+                        if str(output) != str(expected):
+                            all_passed = False
+                            break
+                    elif output:
+                        all_passed = False
+                        break
+                except Exception:
+                    sys.stdout = old_stdout
+                    all_passed = False
+                    break
+
+            if all_passed:
+                print("✅ Great job! Exercise completed successfully.")
+            else:
+                print("❗ The implementation is incorrect or the exercise was not implemented.")
+
+        return wrapper
+    return decorator
+
+def input_output_checker(test_cases):
+    """
+    Decorator for checking if a function produces the expected output for given inputs.
+
+    Args:
+        test_cases (list): A list of dictionaries, each containing 'input' and 'expected' dictionaries.
+
+    Returns:
+        function: Decorated function.
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            all_passed = True
+
+            for case in test_cases:
+                try:
+                    result = func(**case['input'])
+                    if result != case['expected']:
+                        all_passed = False
+                        break
+                except Exception:
+                    all_passed = False
+                    break
+
+            if all_passed:
+                print("✅ Great job! Exercise completed successfully.")
+            else:
+                print("❗ The implementation is incorrect or the exercise was not implemented.")
 
         return wrapper
     return decorator
 
 # print the text "Hello, World!" to the console;
-check_exercise_1 = create_checker(expected_output="Hello, World!")
+check_exercise_1 = output_checker("Hello, World!")
 # print the result of 3 + 5;
-check_exercise_2 = create_checker(expected_output=8)
+check_exercise_2 = output_checker("8")
 # create a variable called "name" and assign it the value "John";
-check_exercise_3 = create_checker(expected_variables={"name": "John"})
+check_exercise_3 = variable_checker({"name": "John"})
 # print the text "Hello, John!" to the console using the variable `name`;
-check_exercise_4 = create_checker(test_cases=[
+check_exercise_4 = test_case_checker([
     (("John",), "Hello, John!"),
     (("Alice",), "Hello, Alice!"),
     (("Bob",), "Hello, Bob!"),
 ])
 # create a variable called "age" and assign it the value 25;
-check_exercise_5 = create_checker(expected_variables={"age": 25})
+check_exercise_5 = variable_checker({"age": 25})
 # print the text "John is 25 years old" to the console using the variables `name` and `age`
-check_exercise_6 = create_checker(test_cases=[
+check_exercise_6 = test_case_checker([
     (("John", 25), "John is 25 years old"),
     (("Alice", 30), "Alice is 30 years old"),
     (("Bob", 40), "Bob is 40 years old"),
 ])
 # create a variable called "is_old" and assign it the value True;
-check_exercise_7 = create_checker(expected_variables={"is_old": True})
+check_exercise_7 = variable_checker({"is_old": True})
 # print the text "John is old" to the console if `is_old` is True;
-check_exercise_8 = create_checker(conditional_test_cases=[
+check_exercise_8 = conditional_test_case_checker([
     ((True,), lambda x: x, "John is old"),
     ((False,), lambda x: not x, ""),
 ])
+# swap the values of the variables `name` and `age` using a third variable;
+check_exercise_9 = input_output_checker([
+    {'input': {'name': 'John', 'age': 25}, 'expected': {'name': 25, 'age': 'John'}},
+    {'input': {'name': 'Alice', 'age': 30}, 'expected': {'name': 30, 'age': 'Alice'}},
+])
+# swap the values of the variables `name` and `age` using only two variables;
+check_exercise_10 = input_output_checker([
+    {'input': {'name': 'John', 'age': 25}, 'expected': {'name': 25, 'age': 'John'}},
+    {'input': {'name': 'Alice', 'age': 30}, 'expected': {'name': 30, 'age': 'Alice'}},
+])
+# create a variable called "height" and assign it the value 1.75;
+check_exercise_11 = variable_checker({"height": 1.75})
+# print the text "John is 25 years old and is 1.75m tall" to the console using the variables `name`, `age` and `height`;
+check_exercise_12 = test_case_checker([
+    (("John", 25, 1.75), "John is 25 years old and is 1.75m tall"),
+    (("Alice", 30, 1.80), "Alice is 30 years old and is 1.8m tall"),
+    (("Bob", 40, 1.70), "Bob is 40 years old and is 1.7m tall"),
+])
+# create a variable called "is_tall" and a variable called "is_old" and assign them the values True and False, respectively;
+check_exercise_13 = variable_checker({"is_tall": True, "is_old": False})
+# print the text "John is tall and old" to the console if `is_tall` and `is_old` are True;
+check_exercise_14 = conditional_test_case_checker([
+    ((True, True), lambda x, y: x and y, "John is tall and old"),
+    ((True, False), lambda x, y: x and y, ""),
+    ((False, True), lambda x, y: x and y, ""),
+    ((False, False), lambda x, y: x and y, ""),
+])
+# print the text "John is tall or old" to the console if `is_tall` or `is_old` are True;
+check_exercise_15 = conditional_test_case_checker([
+    ((True, True), lambda x, y: x or y, "John is tall or old"),
+    ((True, False), lambda x, y: x or y, "John is tall or old"),
+    ((False, True), lambda x, y: x or y, "John is tall or old"),
+    ((False, False), lambda x, y: x or y, ""),
+])
+
 
 __all__ = [
     'check_exercise_1',
@@ -135,4 +249,12 @@ __all__ = [
     'check_exercise_6',
     'check_exercise_7',
     'check_exercise_8',
+    'check_exercise_9',
+    'check_exercise_10',
+    'check_exercise_11',
+    'check_exercise_12',
+    'check_exercise_13',
+    'check_exercise_14',
+    'check_exercise_15',
 ]
+
