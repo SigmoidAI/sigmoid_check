@@ -96,5 +96,22 @@ check_exercise_4 = create_checker(test_cases=[
 ])
 # create a variable called "age" and assign it the value 25;
 check_exercise_5 = create_checker(expected_variables={"age": 25})
+# print the text "John is 25 years old" to the console using the variables `name` and `age`
+check_exercise_6 = create_checker(test_cases=[
+    (("John", 25), "John is 25 years old"),
+    (("Alice", 30), "Alice is 30 years old"),
+    (("Bob", 40), "Bob is 40 years old"),
+])
+# create a variable called "is_old" and assign it the value True;
+check_exercise_7 = create_checker(expected_variables={"is_old": True})
 
-__all__ = ['check_exercise_1', 'check_exercise_2', 'check_exercise_3', 'check_exercise_4', 'check_exercise_5']
+
+__all__ = [
+    'check_exercise_1',
+    'check_exercise_2',
+    'check_exercise_3',
+    'check_exercise_4',
+    'check_exercise_5',
+    'check_exercise_6',
+    'check_exercise_7',
+]
