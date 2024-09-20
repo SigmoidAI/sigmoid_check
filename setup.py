@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="sigmoid_check",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     description="A package for checking the implementation of tasks in Sigmoid Courses",
     long_description=long_description,
@@ -13,7 +13,7 @@ setup(
     author="SigmoidAI - Balamatiuc Eduard",
     author_email="balamatiuc2@gmail.com",
     keywords=["tasks", "check", "sigmoid", "sigmoidai", "sigmoid_check"],
-    license="Apache License 2.0",
+    license="Creative Commons Attribution-NonCommercial 4.0 International License",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
