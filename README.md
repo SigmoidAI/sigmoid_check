@@ -49,3 +49,7 @@ print(session.get_completion_percentage())
 With <3 from Sigmoid!
 
 We are open for feedback. Please send your impressions to balamatiuc2@gmail.com
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. You may use the code for non-commercial purposes, but any commercial use is prohibited. For more details, see the [LICENSE](./LICENSE) file or visit [this link](https://creativecommons.org/licenses/by-nc/4.0/).
