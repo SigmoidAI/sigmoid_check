@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="sigmoid_check",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     description="A package for checking the implementation of tasks in Sigmoid Courses",
     long_description=long_description,
@@ -25,5 +25,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent"
+    ],
+    install_requires=[
+        "numpy>=2.0.0"
     ],
 )
