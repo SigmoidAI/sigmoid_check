@@ -57,6 +57,8 @@ def check_equality(expected, result):
         return expected.equals(result)
     elif isinstance(expected, pd.Index):
         return expected.equals(result)
+    elif isinstance(expected, pd.Categorical):
+        return expected.equals(result)
     return expected == result
 
 def input_output_checker(test_cases):
@@ -110,6 +112,8 @@ def functions_input_output_checker(test_cases):
                 returned_funcs = func(*args, **kwargs)
                 all_passed = True
                 for func_name, cases in test_cases.items():
+                    if all_passed is False:
+                        break
                     if func_name not in returned_funcs:
                         all_passed = False
                         break
@@ -121,7 +125,7 @@ def functions_input_output_checker(test_cases):
                                 result = test_func(*args)
                             else:
                                 result = test_func(**case['input'])
-                            if check_equality(result, case['expected']):
+                            if not check_equality(case['expected']['output'], result):
                                 all_passed = False
                                 break
                         except Exception:
@@ -2029,3 +2033,3231 @@ check_pandas_100 = input_output_checker([
         }
     }
 ])
+
+# Extract DataFrame `df_social_media_metrics` subset for rows where 'Likes' exceed 'Shares' and store it in `highly_liked_posts`.
+check_pandas_101 = input_output_checker([
+    {
+        'input': {
+            'df_social_media_metrics': pd.DataFrame({
+                'Likes': [100, 200, 300],
+                'Shares': [150, 150, 250]
+            })
+        },
+        'expected': {
+            'highly_liked_posts': pd.DataFrame({
+                'Likes': [200, 300],
+                'Shares': [150, 250]
+            }, index=[1, 2])
+        }
+    }
+])
+
+# Use DataFrame `df_product_info` to group by 'Category', computing the minimum 'Price' for each category, storing result as `min_price_by_category`.
+check_pandas_102 = input_output_checker([
+    {
+        'input': {
+            'df_product_info': pd.DataFrame({
+                'Category': ['A', 'B', 'A', 'B'],
+                'Price': [100, 200, 300, 400]
+            })
+        },
+        'expected': {
+            'min_price_by_category': pd.Series(
+                data=[100, 200], index=['A', 'B'], name='Price', dtype='int64'
+            ).rename_axis('Category')
+        }
+    }
+])
+
+# Apply datetime filtering on `df_online_sessions` to store sessions in the month of January 2023 in variable `january_sessions` based on 'SessionStart'.
+check_pandas_103 = input_output_checker([
+    {
+        'input': {
+            'df_online_sessions': pd.DataFrame({
+                'SessionID': [1, 2, 3, 4, 5, 6],
+                'SessionStart': pd.date_range(start='2023-01-01', periods=6, freq='W')
+            })
+        },
+        'expected': {
+            'january_sessions': pd.DataFrame({
+                'SessionID': [1, 2, 3, 4, 5],
+                'SessionStart': pd.date_range(start='2023-01-01', periods=5, freq='W')
+            })
+        }
+    }
+])
+
+# Use DataFrame `df_employee_entries` and fill NA in 'EntryTime' with '08:00 AM', storing the result in `filled_employee_entries`.
+check_pandas_104 = input_output_checker([
+    {
+        'input': {
+            'df_employee_entries': pd.DataFrame({
+                'EmployeeID': [1, 2],
+                'EntryTime': ['09:00 AM', np.nan]
+            })
+        },
+        'expected': {
+            'filled_employee_entries': pd.DataFrame({
+                'EmployeeID': [1, 2],
+                'EntryTime': ['09:00 AM', '08:00 AM']
+            })
+        }
+    }
+])
+
+# Drop all columns with any NA values in DataFrame `df_transaction_records`, storing cleaned version as `non_na_transactions`.
+check_pandas_105 = input_output_checker([
+    {
+        'input': {
+            'df_transaction_records': pd.DataFrame({
+                'TransactionID': [1, 2],
+                'Amount': [100, np.nan]
+            })
+        },
+        'expected': {
+            'non_na_transactions': pd.DataFrame({
+                'TransactionID': [1, 2],
+            })
+        }
+    }
+])
+
+# Create a Series `series_ascending` from a list of numbers [1, 2, 3, 4, 5], using these values as the indices as well.
+check_pandas_106 = input_output_checker([
+    {
+        'input': {},
+        'expected': {
+            'series_ascending': pd.Series([1, 2, 3, 4, 5], index=[1, 2, 3, 4, 5])
+        }
+    }
+])
+
+# Use the query method on DataFrame `df_financial_audit` to extract entries with 'Audit' == 'Complete' and 'Amount' > 10000, saving it as `completed_audits`.
+check_pandas_107 = input_output_checker([
+    {
+        'input': {
+            'df_financial_audit': pd.DataFrame({
+                'Audit': ['Complete', 'Incomplete'],
+                'Amount': [20000, 5000]
+            })
+        },
+        'expected': {
+            'completed_audits': pd.DataFrame({
+                'Audit': ['Complete'],
+                'Amount': [20000]
+            })
+        }
+    }
+])
+
+# Create a custom `percent_round` function and apply it to round the 'Progress' column in DataFrame `df_student_projects` to the nearest ten, storing result as `rounded_progress`.
+check_pandas_108 = input_output_checker([
+    {
+        'input': {
+            'df_student_projects': pd.DataFrame({
+                'Project': ['A', 'B'],
+                'Progress': [26, 75]
+            })
+        },
+        'expected': {
+            'rounded_progress': pd.DataFrame({
+                'Project': ['A', 'B'],
+                'Progress': [30, 80]
+            })
+        }
+    }
+])
+
+# Extract the elements starting from the 10th index to the 20th index from `df_user_activity`, storing the result in `sampled_user_activity`.
+check_pandas_109 = input_output_checker([
+    {
+        'input': {
+            'df_user_activity': pd.DataFrame({
+                'UserID': range(1000),
+                'Activity': ['Login', 'Logout'] * 500
+            })
+        },
+        'expected': {
+            'sampled_user_activity': pd.DataFrame({
+                'UserID': range(10, 20),
+                'Activity': ['Login', 'Logout'] * 5
+            }, index=range(10, 20))
+        }
+    }
+])
+
+# Use advanced indexing to set all negative values in DataFrame `df_temperature_fluctuations` to zero, storing corrected DataFrame as `non_negative_temperatures`.
+check_pandas_110 = input_output_checker([
+    {
+        'input': {
+            'df_temperature_fluctuations': pd.DataFrame({
+                'Temperature': [10, -5, 20, -10]
+            })
+        },
+        'expected': {
+            'non_negative_temperatures': pd.DataFrame({
+                'Temperature': [10, 0, 20, 0]
+            })
+        }
+    }
+])
+
+# With DataFrame `df_fleet_inventory`, allocate memory efficiency by converting 'Year' column to category, saving the result as `efficient_fleet_inventory`.
+check_pandas_111 = input_output_checker([
+    {
+        'input': {
+            'df_fleet_inventory': pd.DataFrame({
+                'Year': [2020, 2021, 2020, 2021]
+            })
+        },
+        'expected': {
+            'efficient_fleet_inventory': pd.DataFrame({
+                'Year': [2020, 2021, 2020, 2021]
+            }).astype({'Year': 'category'})
+        }
+    }
+])
+
+# Use DataFrame `df_respiratory_data` to calculate cumulative maximum of 'Pulse' within groups of 'PatientID', storing it as `grouped_cumulative_max`.
+check_pandas_112 = input_output_checker([
+    {
+        'input': {
+            'df_respiratory_data': pd.DataFrame({
+                'PatientID': [1, 1, 2, 2],
+                'Pulse': [100, 110, 120, 130]
+            })
+        },
+        'expected': {
+            'grouped_cumulative_max': pd.DataFrame({
+                'PatientID': [1, 1, 2, 2],
+                'Pulse': [100, 110, 120, 130]
+            }).groupby('PatientID')['Pulse'].cummax()
+        }
+    }
+])
+
+# Group DataFrame `df_weather_statistics` and apply aggregation to find both 'mean' and 'std' of 'Temperature', storing multi-aggregate result as `weather_stats`.
+check_pandas_113 = input_output_checker([
+    {
+        'input': {
+            'df_weather_statistics': pd.DataFrame({
+                'City': ['A', 'A', 'B', 'B'],
+                'Temperature': [10, 20, 30, 40]
+            })
+        },
+        'expected': {
+            'weather_stats': pd.DataFrame(
+                {
+                    'mean': {'A': 15.0, 'B': 35.0},
+                    'std': {'A': 7.0710678118654755, 'B': 7.0710678118654755}
+                }
+            )
+        }
+    }
+])
+
+# Create a hierarchical index on DataFrame `df_multilayer_data` using [('Region', 'State')], saving the result as `hierarchical_multilayer`.
+check_pandas_114 = input_output_checker([
+    {
+        'input': {
+            'df_multilayer_data': pd.DataFrame({
+                'Region': ['East', 'East', 'West', 'West'],
+                'State': ['NY', 'NJ', 'CA', 'WA']
+            })
+        },
+        'expected': {
+            'hierarchical_multilayer': pd.DataFrame({
+                'Region': ['East', 'East', 'West', 'West'],
+                'State': ['NY', 'NJ', 'CA', 'WA']
+            }).set_index(['Region', 'State'])
+        }
+    }
+])
+
+# Calculate the exponential moving average with a span of 10 on the 'Close' column in DataFrame `df_market_activity`, storing to `ema_market_activity`.
+check_pandas_115 = input_output_checker([
+    {
+        'input': {
+            'df_market_activity': pd.DataFrame({
+                'Date': pd.date_range(start='2022-01-01', periods=5, freq='D'),
+                'Close': [100, 110, 120, 130, 140]
+            })
+        },
+        'expected': {
+            'ema_market_activity': pd.DataFrame({
+                'Date': pd.date_range(start='2022-01-01', periods=5, freq='D'),
+                'Close': [100, 110, 120, 130, 140]
+            })['Close'].ewm(span=10).mean()
+        }
+    }
+])
+
+# Create DataFrame `df_temperature_readings` for two sensors over the year using monthly datetime index, with lineaerly increasing temperature values from 20 to 30 for Sensor1 and 15 to 25 for Sensor2.
+check_pandas_116 = input_output_checker([
+    {
+        'input': {},
+        'expected': {
+            'df_temperature_readings': pd.DataFrame({
+            'Sensor1': np.linspace(20, 30, num=12),
+            'Sensor2': np.linspace(15, 25, num=12)
+        }, index=pd.date_range(start='2023-01-01', periods=12, freq='ME'))
+        }
+    }
+])
+# Use DataFrame `df_sales_tiers` to add a 'SalesTier' column assigned by binning the 'Sales' column into 'Low', 'Medium', and 'High' categories based on [0, 5000, 10000, 15000] bins, storing as `tiered_sales`.
+check_pandas_117 = input_output_checker([
+    {
+        'input': {
+            'df_sales_tiers': pd.DataFrame({
+                'Sales': [1000, 6000, 12000]
+            })
+        },
+        'expected': {
+            'tiered_sales': pd.DataFrame({
+                'Sales': pd.Series([1000, 6000, 12000], dtype='int64'),
+                'SalesTier': pd.Categorical(['Low', 'Medium', 'High'], categories=['Low', 'Medium', 'High'], ordered=True)
+            })
+        }
+    }
+])
+
+# Extract month at index of DataFrame `df_time_based_events`, storing them as a new column 'EventMonth' in the DataFrame.
+check_pandas_118 = input_output_checker([
+    {
+        'input': {
+            'df_time_based_events': pd.DataFrame({
+                'EventDate': pd.date_range(start='2023-01-01', periods=3, freq='ME')
+            }, index=pd.date_range(start='2023-01-01', periods=3, freq='ME'))
+        },
+        'expected': {
+            'df_time_based_events': pd.DataFrame({
+                'EventDate': pd.date_range(start='2023-01-01', periods=3, freq='ME'),
+                'EventMonth': pd.Series(data=[1, 2, 3], dtype='int32', index=pd.date_range(start='2023-01-01', periods=3, freq='ME'))
+            }, index=pd.date_range(start='2023-01-01', periods=3, freq='ME'))
+        }
+    }
+])
+
+# Given a DataFrame `df_tennis_matches`, select rows using .loc where 'MatchesPlayed' > 20 and store them as `consistent_players`.
+check_pandas_119 = input_output_checker([
+    {
+        'input': {
+            'df_tennis_matches': pd.DataFrame({
+                'Player': ['A', 'B', 'C'],
+                'MatchesPlayed': [10, 30, 20]
+            })
+        },
+        'expected': {
+            'consistent_players': pd.DataFrame({
+                'Player': ['B'],
+                'MatchesPlayed': [30]
+            }, index=[1])
+        }
+    }
+])
+
+# Utilize .iloc on DataFrame `df_daily_results` to select rows by integer location, focusing on every third row, and storing result as `every_third_result`.
+check_pandas_120 = input_output_checker([
+    {
+        'input': {
+            'df_daily_results': pd.DataFrame({
+                'Date': pd.date_range(start='2023-01-01', periods=5, freq='D'),
+                'Result': ['Win', 'Loss', 'Win', 'Loss', 'Win']
+            })
+        },
+        'expected': {
+            'every_third_result': pd.DataFrame({
+                'Date': pd.date_range(start='2023-01-01', periods=5, freq='D'),
+                'Result': ['Win', 'Loss', 'Win', 'Loss', 'Win']
+            }).iloc[::3]
+        }
+    }
+])
+
+# From DataFrame `df_survey_responses`, combine 'Question' and 'Answer' columns into a single 'Response' column, storing the result as a Series `consolidated_responses` in the format 'Question: Answer'.
+check_pandas_121 = input_output_checker([
+    {
+        'input': {
+            'df_survey_responses': pd.DataFrame({
+                'Question': ['Q1', 'Q2', 'Q3'],
+                'Answer': ['A', 'B', 'C']
+            })
+        },
+        'expected': {
+            'consolidated_responses': pd.Series(data=['Q1: A', 'Q2: B', 'Q3: C'], dtype='object')
+        }
+    }
+])
+
+# Use DataFrame `df_server_logs` to group by 'ServerID' and calculate the sum and max of 'ResponseTime', storing result as `server_response_summary`.
+check_pandas_122 = input_output_checker([
+    {
+        'input': {
+            'df_server_logs': pd.DataFrame({
+                'ServerID': [1, 1, 2, 2],
+                'ResponseTime': [100, 200, 300, 400]
+            })
+        },
+        'expected': {
+            'server_response_summary': pd.DataFrame({
+                'sum': {1: 300, 2: 700},
+                'max': {1: 200, 2: 400}
+            })
+        }
+    }
+])
+
+# Modify DataFrame `df_machine_operating` by adding column 'Downtime' calculated from 'EndTime' minus 'StartTime', storing as `operations_with_downtime`.
+check_pandas_123 = input_output_checker([
+    {
+        'input': {
+            'df_machine_operating': pd.DataFrame({
+                'StartTime': pd.date_range(start='2023-01-01', periods=3, freq='D'),
+                'EndTime': pd.date_range(start='2023-01-02', periods=3, freq='D')
+            })
+        },
+        'expected': {
+            'operations_with_downtime': pd.DataFrame({
+                'StartTime': pd.date_range(start='2023-01-01', periods=3, freq='D'),
+                'EndTime': pd.date_range(start='2023-01-02', periods=3, freq='D'),
+                'Downtime': pd.date_range(start='2023-01-02', periods=3, freq='D') - pd.date_range(start='2023-01-01', periods=3, freq='D')
+            })
+        }
+    }
+])
+
+# Remove duplicate rows from DataFrame `df_patient_visits`, considering only 'PatientID' and 'VisitDate', saving unique rows as `unique_patient_visits`.
+check_pandas_124 = input_output_checker([
+    {
+        'input': {
+            'df_patient_visits': pd.DataFrame({
+                'PatientID': [1, 2, 1],
+                'VisitDate': ['2023-01-01', '2023-01-02', '2023-01-01']
+            })
+        },
+        'expected': {
+            'unique_patient_visits': pd.DataFrame({
+                'PatientID': [1, 2],
+                'VisitDate': ['2023-01-01', '2023-01-02']
+            })
+        }
+    }
+])
+
+# Optimize data processing speed in DataFrame `df_satellite_data` by converting all text-based columns to category type, storing efficient version as `satellite_optimized`.
+check_pandas_125 = input_output_checker([
+    {
+        'input': {
+            'df_satellite_data': pd.DataFrame({
+                'SatelliteID': [1, 2],
+                'SatelliteName': ['A', 'B']
+            })
+        },
+        'expected': {
+            'satellite_optimized': pd.DataFrame({
+                'SatelliteID': pd.Series([1, 2], dtype='int64'),
+                'SatelliteName': pd.Series(['A', 'B'], dtype='category')
+            })
+        }
+    }
+])
+
+# Use vectorized operations on DataFrame `df_temperature_logs` to convert 'TemperatureC' to Fahrenheit, storing the result in `temperature_fahrenheit`.
+check_pandas_126 = input_output_checker([
+    {
+        'input': {
+            'df_temperature_logs': pd.DataFrame({
+                'TemperatureC': [0, 10, 20]
+            })
+        },
+        'expected': {
+            'temperature_fahrenheit': pd.Series({0: 32.0, 1: 50.0, 2: 68.0})
+        }
+    }
+])
+
+# Group DataFrame `df_streaming_data` by 'UserID' and apply a lambda function to compute total view time, storing the result as `total_view_time`.
+check_pandas_127 = input_output_checker([
+    {
+        'input': {
+            'df_streaming_data': pd.DataFrame({
+                'UserID': [1, 1, 2, 2],
+                'ViewTime': [100, 200, 300, 400]
+            })
+        },
+        'expected': {
+            'total_view_time': pd.Series({1: 300, 2: 700})
+        }
+    }
+])
+
+# Use DataFrame `df_sales_analytics` to implement cohort analysis, calculating first purchase date and cohort index, storing result in `sales_cohorts`.
+check_pandas_128 = input_output_checker([
+    {
+        'input': {
+            'df_sales_analytics': pd.DataFrame({
+                'UserID': [1, 2, 1, 2],
+                'PurchaseDate': ['2023-01-01', '2023-01-02', '2023-01-01', '2023-01-02']
+            })
+        },
+        'expected': {
+            'sales_cohorts': pd.DataFrame(
+                {
+                    'UserID': {0: 1, 1: 2, 2: 1, 3: 2},
+                    'PurchaseDate': {
+                        0: '2023-01-01',
+                        1: '2023-01-02',
+                        2: '2023-01-01',
+                        3: '2023-01-02'
+                    },
+                    'CohortIndex': {
+                        0: '2023-01-01',
+                        1: '2023-01-02', 
+                        2: '2023-01-01',
+                        3: '2023-01-02'
+                    }
+                }
+            )
+        }
+    }
+])
+
+# In DataFrame `df_web_traffic`, apply conversion to 'Date' column from string to datetime, saving the updated DataFrame as `web_traffic_dates`.
+check_pandas_129 = input_output_checker([
+    {
+        'input': {
+            'df_web_traffic': pd.DataFrame({
+                'Date': ['2023-01-01', '2023-01-02']
+            })
+        },
+        'expected': {
+            'web_traffic_dates': pd.DataFrame({
+                'Date': pd.to_datetime(['2023-01-01', '2023-01-02'])
+            })
+        }
+    }
+])
+
+# Create DataFrame `df_energy_savings` with datetime index representing bi-weekly dates over one year, filled with repetitive 5% and 10% energy savings, stored in 'SavingsPercent'.
+check_pandas_130 = input_output_checker([
+    {
+        'input': {},
+        'expected': {
+            'df_energy_savings': pd.DataFrame({
+                'SavingsPercent': [5, 10] * 13,
+                'Date': pd.date_range(start='2023-01-01', periods=26, freq='2W')
+            }).set_index('Date')
+        }
+    }
+])
+
+# With DataFrame `df_vehicle_data`, apply method chaining to filter 'Type' as 'SUV' and sort by 'RecallDate', saving sorted SUVs as `sorted_suvs`.
+check_pandas_131 = input_output_checker([
+    {
+        'input': {
+            'df_vehicle_data': pd.DataFrame({
+                'Type': ['SUV', 'Sedan'],
+                'RecallDate': ['2023-01-01', '2023-01-02']
+            })
+        },
+        'expected': {
+            'sorted_suvs': pd.DataFrame({
+                'Type': ['SUV'],
+                'RecallDate': ['2023-01-01']
+            })
+        }
+    }
+])
+
+# Extract 'year' from 'DateAdmitted' in DataFrame `df_patient_admissions` using datetime operations, storing extracted years in `admission_years`.
+check_pandas_132 = input_output_checker([
+    {
+        'input': {
+            'df_patient_admissions': pd.DataFrame({
+                'DateAdmitted': pd.date_range(start='2023-01-01', periods=3, freq='D')
+            })
+        },
+        'expected': {
+            'admission_years': pd.Series(data=[2023, 2023, 2023], dtype='int32')
+        }
+    }
+])
+
+# Process DataFrame `df_cost_analysis` by converting 'Amount' to USD using 'Currency' which contains the type like ['EUR', 'GBP'] conversion rates being EUR: 1.12 and GBP: 1.30, storing result as `cost_analysis_usd` with column 'Amount' in 'Currency' and 'AmountUSD' in USD.
+check_pandas_133 = input_output_checker([
+    {
+        'input': {
+            'df_cost_analysis': pd.DataFrame({
+                'Currency': ['EUR', 'GBP'],
+                'Amount': [100, 200]
+            })
+        },
+        'expected': {
+            'cost_analysis_usd': pd.DataFrame({'Currency': {0: 'EUR', 1: 'GBP'}, 'Amount': {0: 112.00000000000001, 1: 260.0}})
+        }
+    }
+])
+
+# In DataFrame `df_logistics_data`, use rolling window of 30 days to calculate moving average inventory level, storing as `thirty_day_moving_inventory`.
+check_pandas_134 = input_output_checker([
+    {
+        'input': {
+            'df_logistics_data': pd.DataFrame({
+                'Date': pd.date_range(start='2023-01-01', periods=5, freq='D'),
+                'InventoryLevel': [100, 200, 300, 400, 500]
+            })
+        },
+        'expected': {
+            'thirty_day_moving_inventory': pd.DataFrame({
+                'Date': pd.date_range(start='2023-01-01', periods=5, freq='D'),
+                'InventoryLevel': [100, 200, 300, 400, 500]
+            })['InventoryLevel'].rolling(window=30).mean()
+        }
+    }
+])
+
+# From DataFrame `df_sports_results`, extract top three teams based on 'Scores', sorting first, saving top teams as `top_teams`.
+check_pandas_135 = input_output_checker([
+    {
+        'input': {
+            'df_sports_results': pd.DataFrame({
+                'Team': ['A', 'B', 'C'],
+                'Scores': [100, 200, 300]
+            })
+        },
+        'expected': {
+            'top_teams': pd.DataFrame({
+                'Team': ['C', 'B', 'A'],
+                'Scores': [300, 200, 100]
+            }, index=[2, 1, 0])
+        }
+    }
+])
+
+# Use DataFrame `df_network_activity` statistics to calculate z-scores for 'Bandwidth', storing in column 'ZscoreBandwidth' as `network_with_zscore`.
+check_pandas_136 = input_output_checker([
+    {
+        'input': {
+            'df_network_activity': pd.DataFrame({
+                'Bandwidth': [100, 200, 300]
+            })
+        },
+        'expected': {
+            'network_with_zscore': pd.DataFrame({
+                'Bandwidth': [100, 200, 300],
+                'ZscoreBandwidth': [-1.0, 0.0, 1.0]
+            })
+        }
+    }
+])
+
+# Perform inplace boolean update of `df_market_responses` setting all 'ResponseTime' > 300 to 300, saving updated DataFrame.
+check_pandas_137 = input_output_checker([
+    {
+        'input': {
+            'df_market_responses': pd.DataFrame({
+                'ResponseTime': [100, 400]
+            })
+        },
+        'expected': {
+            'df_market_responses': pd.DataFrame({
+                'ResponseTime': [100, 300]
+            })
+        }
+    }
+])
+
+# Analyze DataFrame `df_social_behaviors` applying transform with a custom function to 'EngagementRate' to normalize within each 'Group', saving result.
+check_pandas_138 = input_output_checker([
+    {
+        'input': {
+            'df_social_behaviors': pd.DataFrame({
+                'Group': ['A', 'A', 'B', 'B'],
+                'EngagementRate': [0.5, 0.8, 0.6, 0.9]
+            })
+        },
+        'expected': {
+            'df_social_behaviors': pd.DataFrame(
+                {
+                    'Group': {0: 'A', 1: 'A', 2: 'B', 3: 'B'},
+                    'EngagementRate': {0: 0.5, 1: 0.8, 2: 0.6, 3: 0.9},
+                    'NormalizedEngagementRate': {0: -0.7071067811865476, 1: 0.7071067811865476, 2: -0.7071067811865476, 3: 0.7071067811865476}
+                }
+            )
+        }
+    }
+])
+
+# Use DataFrame `df_product_launch` to derive 'ResponseRate' from 'Inquiries' divided by 'Sales', multiplied by 100, storing as `launch_responses`.
+check_pandas_139 = input_output_checker([
+    {
+        'input': {
+            'df_product_launch': pd.DataFrame({
+                'Inquiries': [100, 200],
+                'Sales': [10, 20]
+            })
+        },
+        'expected': {
+            'launch_responses': pd.DataFrame({
+                'Inquiries': [100, 200],
+                'Sales': [10, 20],
+                'ResponseRate': [1000.0, 1000.0]
+            })
+        }
+    }
+])
+
+# Create a function create_series_from_dict that takes a dictionary input_dict as an argument, and returns a pandas Series with the dictionary keys as the Series index.
+check_pandas_140 = functions_input_output_checker({
+    'create_series_from_dict': [
+        {
+            'input': {'input_dict': {'A': 1, 'B': 2, 'C': 3}},
+            'expected': {'output': pd.Series([1, 2, 3], index=['A', 'B', 'C'])}
+        },
+        {
+            'input': {'input_dict': {'X': 10, 'Y': 20, 'Z': 30}},
+            'expected': {'output': pd.Series([10, 20, 30], index=['X', 'Y', 'Z'])}
+        },
+        {
+            'input': {'input_dict': {'One': 100, 'Two': 200, 'Three': 300}},
+            'expected': {'output': pd.Series([100, 200, 300], index=['One', 'Two', 'Three'])}
+        }
+    ]
+})
+
+# Define a function filter_series_positive that takes a pandas Series data_series and returns a new Series containing only the elements where the value is positive.
+check_pandas_141 = functions_input_output_checker({
+    'filter_series_positive': [
+        {
+            'input': {'data_series': pd.Series([1, -2, 3, -4, 5])},
+            'expected': {'output': pd.Series([1, 3, 5], index=[0, 2, 4])}
+        },
+        {
+            'input': {'data_series': pd.Series([-10, 20, -30, 40, -50])},
+            'expected': {'output': pd.Series([20, 40], index=[1, 3])}
+        },
+        {
+            'input': {'data_series': pd.Series([100, -200, 300, -400, 500])},
+            'expected': {'output': pd.Series([100, 300, 500], index=[0, 2, 4])}
+        }
+    ]
+})
+
+# Develop a function `rename_dataframe_columns` that accepts a DataFrame `df` and a dictionary `column_mapping`, and returns the DataFrame with renamed columns according to the mapping.
+check_pandas_142 = functions_input_output_checker({
+    'rename_dataframe_columns': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [4, 5, 6]
+                }),
+                'column_mapping': {'A': 'X', 'B': 'Y'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [1, 2, 3],
+                'Y': [4, 5, 6]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'C': [10, 20, 30],
+                    'D': [40, 50, 60]
+                }),
+                'column_mapping': {'C': 'A', 'D': 'B'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [10, 20, 30],
+                'B': [40, 50, 60]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'E': [100, 200, 300],
+                    'F': [400, 500, 600]
+                }),
+                'column_mapping': {'E': 'X', 'F': 'Y'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [100, 200, 300],
+                'Y': [400, 500, 600]
+            })}
+        }
+    ]
+})
+
+# Write a function `drop_nan_rows` that takes a DataFrame `input_df` and returns a new DataFrame with all rows containing any NaN values removed.
+check_pandas_143 = functions_input_output_checker({
+    'drop_nan_rows': [
+        {
+            'input': {'input_df': pd.DataFrame({
+                'A': [1, 2, np.nan],
+                'B': [4, np.nan, 6]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [1.0],
+                'B': [4.0]
+            })}
+        },
+        {
+            'input': {'input_df': pd.DataFrame({
+                'C': [10, 20, np.nan],
+                'D': [40, np.nan, 60]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'C': [10.0],
+                'D': [40.0]
+            })}
+        },
+        {
+            'input': {'input_df': pd.DataFrame({
+                'E': [100, 200, np.nan],
+                'F': [400, np.nan, 600]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'E': [100.0],
+                'F': [400.0]
+            })}
+        }
+    ]
+})
+
+# Construct a function `fill_missing_with_mean` which takes a DataFrame `df` and fills missing values in each numeric column with the mean of that column, returning the modified DataFrame.
+check_pandas_144 = functions_input_output_checker({
+    'fill_missing_with_mean': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, np.nan],
+                'B': [4, np.nan, 6]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [1.0, 2.0, 1.5],
+                'B': [4.0, 5.0, 6.0]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'C': [10, 20, np.nan],
+                'D': [40, np.nan, 60]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'C': [10.0, 20.0, 15.0],
+                'D': [40.0, 50.0, 60.0]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'E': [100, 200, np.nan],
+                'F': [400, np.nan, 600]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'E': [100.0, 200.0, 150.0],
+                'F': [400.0, 500.0, 600.0]
+            })}
+        }
+    ]
+})
+
+# Implement a function `calculate_group_means` that takes a DataFrame `df` and a column name `group_col`, grouping by `group_col`, then returning the mean of each group as a Series.
+check_pandas_145 = functions_input_output_checker({
+    'calculate_group_means': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Group': ['A', 'A', 'B', 'B'],
+                    'Value': [1, 2, 3, 4]
+                }),
+                'group_col': 'Group'
+            },
+            'expected': {'output': pd.DataFrame(
+                data={'Value': [1.5, 3.5]},
+                index=pd.Index(['A', 'B'], name='Group')
+            )}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Group': ['X', 'X', 'Y', 'Y'],
+                    'Value': [10, 20, 30, 40]
+                }),
+                'group_col': 'Group'
+            },
+            'expected': {'output': pd.DataFrame(
+                data={'Value': [15.0, 35.0]},
+                index=pd.Index(['X', 'Y'], name='Group')
+            )}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Group': ['M', 'M', 'N', 'N'],
+                    'Value': [100, 200, 300, 400]
+                }),
+                'group_col': 'Group'
+            },
+            'expected': {'output': pd.DataFrame(
+                data={'Value': [150.0, 350.0]},
+                index=pd.Index(['M', 'N'], name='Group')
+            )}
+        }
+    ]
+})
+
+# Design a function `subset_dataframe_label` that accepts a DataFrame `df`, a list `rows` of row labels, and returns a subset DataFrame containing only those rows.
+check_pandas_146 = functions_input_output_checker({
+    'subset_dataframe_label': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [4, 5, 6]
+                }),
+                'rows': [0, 2]
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 3],
+                'B': [4, 6]
+            }, index=[0, 2])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'C': [10, 20, 30],
+                    'D': [40, 50, 60]
+                }),
+                'rows': [0, 1]
+            },
+            'expected': {'output': pd.DataFrame({
+                'C': [10, 20],
+                'D': [40, 50]
+            }, index=[0, 1])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'E': [100, 200, 300],
+                    'F': [400, 500, 600]
+                }),
+                'rows': [1, 2]
+            },
+            'expected': {'output': pd.DataFrame({
+                'E': [200, 300],
+                'F': [500, 600]
+            }, index=[1, 2])}
+        }
+    ]
+})
+
+# Define a function `merge_dataframes_on_key` that takes two DataFrames `df1`, `df2`, and a string `key`, merging them on the shared key column and returning the merged DataFrame.
+check_pandas_147 = functions_input_output_checker({
+    'merge_dataframes_on_key': [
+        {
+            'input': {
+                'df1': pd.DataFrame({
+                    'Key': ['A', 'B'],
+                    'Value1': [1, 2]
+                }),
+                'df2': pd.DataFrame({
+                    'Key': ['A', 'B'],
+                    'Value2': [10, 20]
+                }),
+                'key': 'Key'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['A', 'B'],
+                'Value1': [1, 2],
+                'Value2': [10, 20]
+            })}
+        },
+        {
+            'input': {
+                'df1': pd.DataFrame({
+                    'Key': ['X', 'Y'],
+                    'Value1': [10, 20]
+                }),
+                'df2': pd.DataFrame({
+                    'Key': ['X', 'Y'],
+                    'Value2': [100, 200]
+                }),
+                'key': 'Key'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['X', 'Y'],
+                'Value1': [10, 20],
+                'Value2': [100, 200]
+            })}
+        },
+        {
+            'input': {
+                'df1': pd.DataFrame({
+                    'Key': ['M', 'N'],
+                    'Value1': [100, 200]
+                }),
+                'df2': pd.DataFrame({
+                    'Key': ['M', 'N'],
+                    'Value2': [1000, 2000]
+                }),
+                'key': 'Key'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['M', 'N'],
+                'Value1': [100, 200],
+                'Value2': [1000, 2000]
+            })}
+        }
+    ]
+})
+
+# Write a function `aggregate_sales_by_region` which accepts a DataFrame `sales_df` that includes columns 'Region' and 'Sales', and returns a DataFrame with the total sales per region.
+check_pandas_148 = functions_input_output_checker({
+    'aggregate_sales_by_region': [
+        {
+            'input': {'sales_df': pd.DataFrame({
+                'Region': ['A', 'A', 'B', 'B'],
+                'Sales': [100, 200, 300, 400]
+            })},
+            'expected': {'output': pd.Series({'A': 300, 'B': 700})}
+        },
+        {
+            'input': {'sales_df': pd.DataFrame({
+                'Region': ['X', 'X', 'Y', 'Y'],
+                'Sales': [1000, 2000, 3000, 4000]
+            })},
+            'expected': {'output': pd.Series({'X': 3000, 'Y': 7000})}
+        },
+        {
+            'input': {'sales_df': pd.DataFrame({
+                'Region': ['M', 'M', 'N', 'N'],
+                'Sales': [10000, 20000, 30000, 40000]
+            })},
+            'expected': {'output': pd.Series({'M': 30000, 'N': 70000})}
+        }
+    ]
+})
+
+# Implement a function `pivot_table_for_analysis` that takes a DataFrame `df` and strings `index`, `columns`, `values`, and returns a pivot table using those specifications.
+check_pandas_149 = functions_input_output_checker({
+    'pivot_table_for_analysis': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': ['X', 'X', 'Y', 'Y'],
+                    'B': ['A', 'B', 'A', 'B'],
+                    'C': [1, 2, 3, 4]
+                }),
+                'index': 'A',
+                'columns': 'B',
+                'values': 'C'
+            },
+            'expected': {'output': pd.DataFrame({'A': {'X': 1.0, 'Y': 3.0}, 'B': {'X': 2.0, 'Y': 4.0}})}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': ['A', 'A', 'B', 'B'],
+                    'Y': ['X', 'Y', 'X', 'Y'],
+                    'Z': [10, 20, 30, 40]
+                }),
+                'index': 'X',
+                'columns': 'Y',
+                'values': 'Z'
+            },
+            'expected': {'output': pd.DataFrame({'X': {'A': 10.0, 'B': 30.0}, 'Y': {'A': 20.0, 'B': 40.0}})}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': ['A', 'A', 'B', 'B'],
+                    'N': ['X', 'Y', 'X', 'Y'],
+                    'O': [100, 200, 300, 400]
+                }),
+                'index': 'M',
+                'columns': 'N',
+                'values': 'O'
+            },
+            'expected': {'output': pd.DataFrame({'X': {'A': 100.0, 'B': 300.0}, 'Y': {'A': 200.0, 'B': 400.0}})}
+        }
+    ]
+})
+
+# Create a function `calculate_rolling_average` that accepts a DataFrame `df` and an integer `window` to compute the rolling average of a numeric column `column_name`, returning the updated series.
+check_pandas_150 = functions_input_output_checker({
+    'calculate_rolling_average': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3, 4, 5],
+                    'B': [10, 20, 30, 40, 50]
+                }),
+                'window': 2,
+                'column_name': 'B'
+            },
+            'expected': {'output': pd.Series({0: np.nan, 1: 15.0, 2: 25.0, 3: 35.0, 4: 45.0})}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30, 40, 50],
+                    'Y': [100, 200, 300, 400, 500]
+                }),
+                'window': 3,
+                'column_name': 'Y'
+            },
+            'expected': {'output': pd.Series({0: np.nan, 1: np.nan, 2: 200.0, 3: 300.0, 4: 400.0})}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300, 400, 500],
+                    'N': [1000, 2000, 3000, 4000, 5000]
+                }),
+                'window': 4,
+                'column_name': 'N'
+            },
+            'expected': {'output': pd.Series({0: np.nan, 1: np.nan, 2: np.nan, 3: 2500.0, 4: 3500.0})}
+        }
+    ]
+})
+
+# Construct a function `resample_time_series` which takes a time-indexed DataFrame `time_df` and a frequency string `freq`, resampling the DataFrame to the new frequency and summing, returning the result.
+check_pandas_151 = functions_input_output_checker({
+    'resample_time_series': [
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }, index=pd.date_range(start='2023-01-01', periods=3, freq='D')),
+                'freq': 'W'
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'A': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 1,
+                        pd.Timestamp('2023-01-08 00:00:00'): 5
+                    },
+                    'B': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 10,
+                        pd.Timestamp('2023-01-08 00:00:00'): 50
+                    }
+                }
+            )}
+        },
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }, index=pd.date_range(start='2023-01-01', periods=3, freq='D')),
+                'freq': 'W'
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'X': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 10,
+                        pd.Timestamp('2023-01-08 00:00:00'): 50
+                    },
+                    'Y': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 100,
+                        pd.Timestamp('2023-01-08 00:00:00'): 500
+                    }
+                }
+            )}
+        },
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }, index=pd.date_range(start='2023-01-01', periods=3, freq='D')),
+                'freq': 'W'
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'M': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 100,
+                        pd.Timestamp('2023-01-08 00:00:00'): 500
+                    },
+                    'N': {
+                        pd.Timestamp('2023-01-01 00:00:00'): 1000,
+                        pd.Timestamp('2023-01-08 00:00:00'): 5000
+                    }
+                }
+            )}
+        }
+    ]
+})
+
+# Write a function `expand_string_columns` that takes a DataFrame `df` and a list of columns `string_columns`, expanding each string column to lowercase, and returns the modified DataFrame.
+check_pandas_152 = functions_input_output_checker({
+    'expand_string_columns': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': ['Apple', 'Banana'],
+                    'B': ['Cherry', 'Date']
+                }),
+                'string_columns': ['A', 'B']
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': ['apple', 'banana'],
+                'B': ['cherry', 'date']
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': ['Elephant', 'Frog'],
+                    'Y': ['Goose', 'Horse']
+                }),
+                'string_columns': ['X', 'Y']
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': ['elephant', 'frog'],
+                'Y': ['goose', 'horse']
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': ['Iguana', 'Jaguar'],
+                    'N': ['Kangaroo', 'Lion']
+                }),
+                'string_columns': ['M', 'N']
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': ['iguana', 'jaguar'],
+                'N': ['kangaroo', 'lion']
+            })}
+        }
+    ]
+})
+
+# Design a function `convert_to_datetime_index` that accepts a DataFrame `df` and a column name `date_col`, converting it to a DateTimeIndex, and returning the updated DataFrame.
+check_pandas_153 = functions_input_output_checker({
+    'convert_to_datetime_index': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Date': ['2023-01-01', '2023-01-02'],
+                    'Value': [10, 20]
+                }),
+                'date_col': 'Date'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Value': [10, 20]
+            }, index=pd.Series(data=['2023-01-01', '2023-01-02'], name='Date', dtype='<M8[ns]'))}    
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Date': ['2023-02-01', '2023-02-02'],
+                    'Value': [100, 200]
+                }),
+                'date_col': 'Date'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Value': [100, 200]
+            }, index=pd.Series(data=['2023-02-01', '2023-02-02'], name='Date', dtype='<M8[ns]'))}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Date': ['2023-03-01', '2023-03-02'],
+                    'Value': [1000, 2000]
+                }),
+                'date_col': 'Date'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Value': [1000, 2000]
+            }, index=pd.Series(data=['2023-03-01', '2023-03-02'], name='Date', dtype='<M8[ns]'))}
+        }
+    ]
+})
+
+# Implement a function `identify_and_remove_outliers` that identifies outliers in a Series `data_series` using a specified `threshold` by removing the values outside of the `threshodl` multiplied by the standard deviation from the mean.
+check_pandas_154 = functions_input_output_checker({
+    'identify_and_remove_outliers': [
+        {
+            'input': {
+                'data_series': pd.Series([1, 2, 3, 10, 20, 30]),
+                'threshold': 5
+            },
+            'expected': {'output': pd.Series([1, 2, 3, 10, 20, 30])}
+        },
+        {
+            'input': {
+                'data_series': pd.Series([10, 20, 30, 100, 200, 300]),
+                'threshold': 1
+            },
+            'expected': {'output': pd.Series([10, 20, 30, 100, 200])}
+        },
+        {
+            'input': {
+                'data_series': pd.Series([100, 200, 300, 1000, 2000, 3000]),
+                'threshold': 0
+            },
+            'expected': {'output': pd.Series([], dtype='int64')}
+        }
+    ]
+})
+
+# Create a function `calculate_percentage_change` which computes the percentage change over time for a Series `time_series` and returns the updated Series with NaN for the first entry.
+check_pandas_155 = functions_input_output_checker({
+    'calculate_percentage_change': [
+        {
+            'input': {'time_series': pd.Series([1, 2, 3, 4, 5])},
+            'expected': {'output': pd.Series({0: np.nan, 1: 1.0, 2: 0.5, 3: 0.33333333333333326, 4: 0.25})}
+        },
+        {
+            'input': {'time_series': pd.Series([10, 20, 30, 40, 50])},
+            'expected': {'output': pd.Series({0: np.nan, 1: 1.0, 2: 0.5, 3: 0.33333333333333326, 4: 0.25})}
+        },
+        {
+            'input': {'time_series': pd.Series([100, 200, 300, 400, 500])},
+            'expected': {'output': pd.Series({0: np.nan, 1: 1.0, 2: 0.5, 3: 0.33333333333333326, 4: 0.25})}
+        }
+    ]
+})
+
+# Define a function `categorize_based_on_values` which takes a DataFrame `df`, a column `categorical_col`, and returns a DataFrame with additional column 'Category' based on ranges in `categorical_col` with labels ['Low', 'Medium', 'High'] and bins [0, 100, 200, 300].
+check_pandas_156 = functions_input_output_checker({
+    'categorize_based_on_values': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'categorical_col': 'B'
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30],
+                'Category': pd.Categorical(['Low', 'Low', 'Low'], categories=['Low', 'Medium', 'High'], ordered=True)
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'categorical_col': 'Y'
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300],
+                'Category': pd.Categorical(['Low', 'Medium', 'High'], categories=['Low', 'Medium', 'High'], ordered=True)
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'categorical_col': 'N'
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000],
+                'Category': pd.Categorical([np.nan, np.nan, np.nan], categories=['Low', 'Medium', 'High'], ordered=True)
+            })}
+        }
+    ]
+})
+
+# Write a function `shift_dataframe_rows` that takes a DataFrame `df` and an integer `periods`, shifting all rows by the specified number of periods and returning the DataFrame.
+check_pandas_157 = functions_input_output_checker({
+    'shift_dataframe_rows': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'periods': 1
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [np.nan, 1, 2],
+                'B': [np.nan, 10, 20]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'periods': 2
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [np.nan, np.nan, 10],
+                'Y': [np.nan, np.nan, 100]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'periods': 3
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [np.nan, np.nan, np.nan],
+                'N': [np.nan, np.nan, np.nan]
+            })}
+        }
+    ]
+})
+
+# Develop a function `aggregate_and_flatten_grouped` that takes a grouped DataFrame `group_df` and returns a flattened DataFrame with 'sum' and 'count' aggregation for each group and reseted index.
+check_pandas_158 = functions_input_output_checker({
+    'aggregate_and_flatten_grouped': [
+        {
+            'input': {'group_df': pd.DataFrame({
+                'Group': ['A', 'A', 'B', 'B'],
+                'Value': [1, 2, 3, 4]
+            }).groupby('Group')},
+            'expected': {'output': pd.DataFrame(
+                {
+                    ('Group', ''): {0: 'A', 1: 'B'},
+                    ('Value', 'sum'): {0: 3, 1: 7},
+                    ('Value', 'count'): {0: 2, 1: 2}
+                }
+            )}
+        },
+        {
+            'input': {'group_df': pd.DataFrame({
+                'Group': ['X', 'X', 'Y', 'Y'],
+                'Value': [10, 20, 30, 40]
+            }).groupby('Group')},
+            'expected': {'output': pd.DataFrame(
+                {
+                    ('Group', ''): {0: 'X', 1: 'Y'},
+                    ('Value', 'sum'): {0: 30, 1: 70},
+                    ('Value', 'count'): {0: 2, 1: 2}
+                }
+            )}
+        },
+        {
+            'input': {'group_df': pd.DataFrame({
+                'Group': ['M', 'M', 'N', 'N'],
+                'Value': [100, 200, 300, 400]
+            }).groupby('Group')},
+            'expected': {'output': pd.DataFrame(
+                {
+                    ('Group', ''): {0: 'M', 1: 'N'},
+                    ('Value', 'sum'): {0: 300, 1: 700},
+                    ('Value', 'count'): {0: 2, 1: 2}
+                }
+            )}
+        }
+    ]
+})
+
+# Construct a function named `remove_duplicates_by_columns` that takes a DataFrame `df` and a list `subset_columns`, and removes duplicate rows based on these columns, returning the resulting DataFrame.
+check_pandas_159 = functions_input_output_checker({
+    'remove_duplicates_by_columns': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 2, 3],
+                    'B': [10, 20, 20, 30]
+                }),
+                'subset_columns': ['A']
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            }, index=[0, 1, 3])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 20, 30],
+                    'Y': [100, 200, 200, 300]
+                }),
+                'subset_columns': ['X']
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            }, index=[0, 1, 3])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 200, 300],
+                    'N': [1000, 2000, 2000, 3000]
+                }),
+                'subset_columns': ['M']
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            }, index=[0, 1, 3])}
+        }
+    ]
+})
+
+# Design a function `calculate_memory_usage` that takes a DataFrame `df` and returns the total memory usage in MB, both with and without optimizations for all columns possible.
+check_pandas_160 = functions_input_output_checker({
+    'calculate_memory_usage': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': (np.float64(0.000171661376953125), np.float64(4.57763671875e-05))}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': (np.float64(0.000171661376953125), np.float64(4.57763671875e-05))}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': (np.float64(0.000171661376953125), np.float64(4.57763671875e-05))}
+        }
+    ]
+})
+
+# Implement a function `map_values_with_dict` which accepts a DataFrame `df`, a column `target_col`, and a dictionary `value_map`, returning the updated DataFrame after mapping.
+check_pandas_161 = functions_input_output_checker({
+    'map_values_with_dict': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': ['X', 'Y', 'Z'],
+                    'B': [10, 20, 30]
+                }),
+                'target_col': 'A',
+                'value_map': {'X': 'Apple', 'Y': 'Banana', 'Z': 'Cherry'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': ['Apple', 'Banana', 'Cherry'],
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': ['A', 'B', 'C'],
+                    'Y': [100, 200, 300]
+                }),
+                'target_col': 'X',
+                'value_map': {'A': 'Apple', 'B': 'Banana', 'C': 'Cherry'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': ['Apple', 'Banana', 'Cherry'],
+                'Y': [100, 200, 300]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': ['1', '2', '3'],
+                    'N': [1000, 2000, 3000]
+                }),
+                'target_col': 'M',
+                'value_map': {'1': 'Apple', '2': 'Banana', '3': 'Cherry'}
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': ['Apple', 'Banana', 'Cherry'],
+                'N': [1000, 2000, 3000]
+            })}
+        }
+    ]
+})
+
+# Write a function `select_top_n_rows_based_on_column` that takes a DataFrame `df`, a column `target_col`, and an integer `n`, and returns the top `n` rows sorted by `target_col`.
+check_pandas_162 = functions_input_output_checker({
+    'select_top_n_rows_based_on_column': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': ['X', 'Y', 'Z'],
+                    'B': [10, 20, 30]
+                }),
+                'target_col': 'B',
+                'n': 2
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'A': {2: 'Z', 1: 'Y'},
+                    'B': {2: 30, 1: 20}
+                }
+            )}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': ['A', 'B', 'C'],
+                    'Y': [100, 200, 300]
+                }),
+                'target_col': 'Y',
+                'n': 2
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'X': {2: 'C', 1: 'B'},
+                    'Y': {2: 300, 1: 200}
+                }
+            )}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': ['1', '2', '3'],
+                    'N': [1000, 2000, 3000]
+                }),
+                'target_col': 'N',
+                'n': 2
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'M': {2: '3', 1: '2'},
+                    'N': {2: 3000, 1: 2000}
+                }
+            )}
+        }
+    ]
+})
+
+# Create a function `replace_substrings_in_column` that takes a DataFrame `df`, a column `text_col`, a string `old`, and a string `new`, replacing all occurrences of `old` with `new` in `text_col`.
+check_pandas_163 = functions_input_output_checker({
+    'replace_substrings_in_column': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': ['Apple', 'Banana', 'Cherry'],
+                    'B': [10, 20, 30]
+                }),
+                'text_col': 'A',
+                'old': 'a',
+                'new': 'X'
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': ['Apple', 'BXnXnX', 'Cherry'],
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': ['Apple', 'Banana', 'Cherry'],
+                    'Y': [100, 200, 300]
+                }),
+                'text_col': 'X',
+                'old': 'a',
+                'new': 'X'
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'X': ['Apple', 'BXnXnX', 'Cherry'],
+                    'Y': [100, 200, 300]
+                }
+            )}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': ['Apple', 'Banana', 'Cherry'],
+                    'N': [1000, 2000, 3000]
+                }),
+                'text_col': 'M',
+                'old': 'e',
+                'new': 'X'
+            },
+            'expected': {'output': pd.DataFrame(
+                {
+                    'M': ['ApplX', 'Banana', 'ChXrry'],
+                    'N': [1000, 2000, 3000]
+                }
+            )}
+        }
+    ]
+})
+
+# Define a function `apply_discretization_binner` which bins Series `data_series` into a specified number of discrete intervals `n_bins` and returns the binned Series.
+check_pandas_164 = functions_input_output_checker({
+    'apply_discretization_binner': [
+        {
+            'input': {
+                'data_series': pd.Series([1, 2, 3, 4, 5]),
+                'n_bins': 2
+            },
+            'expected': {'output': pd.cut(pd.Series([1, 2, 3, 4, 5]), bins=2)}
+        },
+        {
+            'input': {
+                'data_series': pd.Series([10, 20, 30, 40, 50]),
+                'n_bins': 3
+            },
+            'expected': {'output': pd.cut(pd.Series([10, 20, 30, 40, 50]), bins=3)}
+        },
+        {
+            'input': {
+                'data_series': pd.Series([100, 200, 300, 400, 500]),
+                'n_bins': 4
+            },
+            'expected': {'output': pd.cut(pd.Series([100, 200, 300, 400, 500]), bins=4)}
+        }
+    ]
+})
+
+# Write a function `generate_descriptive_statistics` that takes a DataFrame `df` and returns a DataFrame with descriptive statistics such as mean, median, and standard deviation for all numeric columns.
+check_pandas_165 = functions_input_output_checker({
+    'generate_descriptive_statistics': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame(
+                {
+                    'A': {
+                        'count': 3.0,
+                        'mean': 2.0,
+                        'std': 1.0,
+                        'min': 1.0,
+                        '25%': 1.5,
+                        '50%': 2.0,
+                        '75%': 2.5,
+                        'max': 3.0
+                    },
+                    'B': {
+                        'count': 3.0,
+                        'mean': 20.0,
+                        'std': 10.0,
+                        'min': 10.0,
+                        '25%': 15.0,
+                        '50%': 20.0,
+                        '75%': 25.0,
+                        'max': 30.0
+                    }
+                }
+            )}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame(
+                {
+                    'X': {
+                        'count': 3.0,
+                        'mean': 20.0,
+                        'std': 10.0,
+                        'min': 10.0,
+                        '25%': 15.0,
+                        '50%': 20.0,
+                        '75%': 25.0,
+                        'max': 30.0
+                    },
+                    'Y': {
+                        'count': 3.0,
+                        'mean': 200.0,
+                        'std': 100.0,
+                        'min': 100.0,
+                        '25%': 150.0,
+                        '50%': 200.0,
+                        '75%': 250.0,
+                        'max': 300.0
+                    }
+                }
+            )}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame(
+                {
+                    'M': {
+                        'count': 3.0,
+                        'mean': 200.0,
+                        'std': 100.0,
+                        'min': 100.0,
+                        '25%': 150.0,
+                        '50%': 200.0,
+                        '75%': 250.0,
+                        'max': 300.0
+                    },
+                    'N': {
+                        'count': 3.0,
+                        'mean': 2000.0,
+                        'std': 1000.0,
+                        'min': 1000.0,
+                        '25%': 1500.0,
+                        '50%': 2000.0,
+                        '75%': 2500.0,
+                        'max': 3000.0
+                    }
+                }
+            )}
+        }
+    ]
+})
+
+# Implement a function `convert_column_dtype` that accepts a DataFrame `df`, a column name `col`, and a data type `new_type`, and returns the DataFrame with `col` converted to `new_type`.
+check_pandas_166 = functions_input_output_checker({
+    'convert_column_dtype': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'col': 'A',
+                'new_type': float
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1.0, 2.0, 3.0],
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'col': 'Y',
+                'new_type': float
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100.0, 200.0, 300.0]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'col': 'N',
+                'new_type': float
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000.0, 2000.0, 3000.0]
+            })}
+        }
+    ]
+})
+
+# Develop a function `sort_dataframe_by_multiple_columns` taking DataFrame `df` and a list `columns_list` to sort the DataFrame by these columns, returning the sorted DataFrame.
+check_pandas_167 = functions_input_output_checker({
+    'sort_dataframe_by_multiple_columns': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'columns_list': ['A']
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'columns_list': ['Y']
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'columns_list': ['M']
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })}
+        }
+    ]
+})
+
+# Create a function `create_time_based_features` which accepts a DataFrame `time_df` with a 'Timestamp' column and returns the DataFrame with new columns for hour, day, and month.
+check_pandas_168 = functions_input_output_checker({
+    'create_time_based_features': [
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'Timestamp': pd.to_datetime(['2023-01-01 10:00:00', '2023-01-02 11:00:00', '2023-01-03 12:00:00'])
+                }),
+            },
+            'expected': {'output': pd.DataFrame({
+                'Timestamp': pd.to_datetime(['2023-01-01 10:00:00', '2023-01-02 11:00:00', '2023-01-03 12:00:00']),
+                'Hour': pd.Series([10, 11, 12], dtype='int32'),
+                'Day': pd.Series([1, 2, 3], dtype='int32'),
+                'Month': pd.Series([1, 1, 1], dtype='int32')
+            })}
+        },
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'Timestamp': pd.to_datetime(['2023-02-01 10:00:00', '2023-02-02 11:00:00', '2023-02-03 12:00:00'])
+                }),
+            },
+            'expected': {'output': pd.DataFrame({
+                'Timestamp': pd.to_datetime(['2023-02-01 10:00:00', '2023-02-02 11:00:00', '2023-02-03 12:00:00']),
+                'Hour': pd.Series([10, 11, 12], dtype='int32'),
+                'Day': pd.Series([1, 2, 3], dtype='int32'),
+                'Month': pd.Series([2, 2, 2], dtype='int32')
+            })}
+        },
+        {
+            'input': {
+                'time_df': pd.DataFrame({
+                    'Timestamp': pd.to_datetime(['2023-03-01 10:00:00', '2023-03-02 11:00:00', '2023-03-03 12:00:00'])
+                }),
+            },
+            'expected': {'output': pd.DataFrame({
+                'Timestamp': pd.to_datetime(['2023-03-01 10:00:00', '2023-03-02 11:00:00', '2023-03-03 12:00:00']),
+                'Hour': pd.Series([10, 11, 12], dtype='int32'),
+                'Day': pd.Series([1, 2, 3], dtype='int32'),
+                'Month': pd.Series([3, 3, 3], dtype='int32')
+            })}
+        }
+    ]
+})
+
+# Create a function `analyze_sales_data` that takes a DataFrame `sales_df` with columns 'Date', 'Region', and 'Sales'. The function should: Convert 'Date' to a DateTime object; Filter out any rows where 'Sales' is negative; Group by 'Region' to calculate the total and average sales; Return a DataFrame with columns 'Region', 'TotalSales', 'AverageSales';
+check_pandas_169 = functions_input_output_checker({
+    'analyze_sales_data': [
+        {
+            'input': {
+                'sales_df': pd.DataFrame({
+                    'Date': ['2023-01-01', '2023-01-02', '2023-01-03'],
+                    'Region': ['A', 'A', 'B'],
+                    'Sales': [100, 200, -300]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Region': ['A'],
+                'TotalSales': [300],
+                'AverageSales': [150.0]
+            })}
+        },
+        {
+            'input': {
+                'sales_df': pd.DataFrame({
+                    'Date': ['2023-02-01', '2023-02-02', '2023-02-03'],
+                    'Region': ['B', 'B', 'C'],
+                    'Sales': [100, 200, 300]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Region': ['B', 'C'],
+                'TotalSales': [300, 300],
+                'AverageSales': [150.0, 300.0]
+            })}
+        },
+        {
+            'input': {
+                'sales_df': pd.DataFrame({
+                    'Date': ['2023-03-01', '2023-03-02', '2023-03-03'],
+                    'Region': ['C', 'C', 'D'],
+                    'Sales': [100, 200, 300]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Region': ['C', 'D'],
+                'TotalSales': [300, 300],
+                'AverageSales': [150.0, 300.0]
+            })}
+        }
+    ]
+})
+
+# Write a function `clean_and_merge_datasets` that takes two DataFrames `df_left` and `df_right`, and: Fills NA values in `df_left` with 0; Drops any duplicate rows in `df_right`; Merges the cleaned DataFrames on a common column 'Key', using an outer join; Returns the merged DataFrame sorted by 'Key';
+check_pandas_170 = functions_input_output_checker({
+    'clean_and_merge_datasets': [
+        {
+            'input': {
+                'df_left': pd.DataFrame({
+                    'Key': ['A', 'B', 'C'],
+                    'Value': [100, np.nan, 300]
+                }),
+                'df_right': pd.DataFrame({
+                    'Key': ['A', 'B', 'B'],
+                    'Value': [10, 20, 30]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['A', 'B', 'B', 'C'],
+                'Value_x': [100.0, 0.0, 0.0, 300.0],
+                'Value_y': [10, 20, 30, np.nan]
+            })}
+        },
+        {
+            'input': {
+                'df_left': pd.DataFrame({
+                    'Key': ['X', 'Y', 'Z'],
+                    'Value': [100, np.nan, 300]
+                }),
+                'df_right': pd.DataFrame({
+                    'Key': ['X', 'Y', 'Y'],
+                    'Value': [10, 20, 30]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['X', 'Y', 'Y', 'Z'],
+                'Value_x': [100.0, 0.0, 0.0, 300.0],
+                'Value_y': [10, 20, 30, np.nan]
+            })}
+        },
+        {
+            'input': {
+                'df_left': pd.DataFrame({
+                    'Key': ['M', 'N', 'O'],
+                    'Value': [100, np.nan, 300]
+                }),
+                'df_right': pd.DataFrame({
+                    'Key': ['M', 'N', 'N'],
+                    'Value': [10, 20, 30]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Key': ['M', 'N', 'N', 'O'],
+                'Value_x': [100.0, 0.0, 0.0, 300.0],
+                'Value_y': [10, 20, 30, np.nan]
+            })}
+        }
+    ]
+})
+
+# Develop a function `process_sensor_data_batch` that receives a DataFrame `sensor_df` containing 'SensorID', 'ReadingValue', 'Timestamp'. Convert 'Timestamp' to datetime format; Ensure all 'ReadingValue' entries are non-negative; Calculate the mean and standard deviation of 'ReadingValue' for each 'SensorID'; Return a DataFrame with 'SensorID', 'MeanReading', 'StdDevReading';
+check_pandas_171 = functions_input_output_checker({
+    'process_sensor_data_batch': [
+        {
+            'input': {
+                'sensor_df': pd.DataFrame({
+                    'SensorID': ['A', 'A', 'B'],
+                    'ReadingValue': [100, 200, -300],
+                    'Timestamp': ['2023-01-01', '2023-01-02', '2023-01-03']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'SensorID': ['A'],
+                'MeanReading': [150.0],
+                'StdDevReading': [70.71067811865476]
+            })}
+        },
+        {
+            'input': {
+                'sensor_df': pd.DataFrame({
+                    'SensorID': ['B', 'B', 'C'],
+                    'ReadingValue': [100, 200, 300],
+                    'Timestamp': ['2023-02-01', '2023-02-02', '2023-02-03']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'SensorID': ['B', 'C'],
+                'MeanReading': [150.0, 300.0],
+                'StdDevReading': [70.71067811865476, np.nan]
+            })}
+        },
+        {
+            'input': {
+                'sensor_df': pd.DataFrame({
+                    'SensorID': ['C', 'C', 'D'],
+                    'ReadingValue': [100, 200, 300],
+                    'Timestamp': ['2023-03-01', '2023-03-02', '2023-03-03']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'SensorID': ['C', 'D'],
+                'MeanReading': [150.0, 300.0],
+                'StdDevReading': [70.71067811865476, np.nan]
+            })}
+        }
+    ]
+})
+
+# Construct a function `analyze_customer_behaviors` to handle a DataFrame `customer_df` with columns 'CustomerID', 'PurchaseAmount', 'VisitTimestamp'. Convert 'VisitTimestamp' to a DateTimeIndex; Filter to include only purchases greater than a specified `min_purchase`; Group by 'CustomerID' to determine the total and count of purchases; Return a DataFrame with 'CustomerID', 'TotalPurchases', 'NumberVisits', and attach the most recent visit date;
+check_pandas_172 = functions_input_output_checker({
+    'analyze_customer_behaviors': [
+        {
+            'input': {
+                'customer_df': pd.DataFrame({
+                    'CustomerID': ['A', 'A', 'B'],
+                    'PurchaseAmount': [100, 200, 300],
+                    'VisitTimestamp': ['2023-01-01', '2023-01-02', '2023-01-03']
+                }),
+                'min_purchase': 150
+            },
+            'expected': {'output': pd.DataFrame({
+                'CustomerID': ['A', 'B'],
+                'TotalPurchases': [200, 300],
+                'NumberVisits': [1, 1],
+                'MostRecentVisit': pd.to_datetime(['2023-01-02', '2023-01-03'])
+            })}
+        },
+        {
+            'input': {
+                'customer_df': pd.DataFrame({
+                    'CustomerID': ['B', 'B', 'C'],
+                    'PurchaseAmount': [100, 200, 300],
+                    'VisitTimestamp': ['2023-02-01', '2023-02-02', '2023-02-03']
+                }),
+                'min_purchase': 250
+            },
+            'expected': {'output': pd.DataFrame({
+                'CustomerID': ['C'],
+                'TotalPurchases': [300],
+                'NumberVisits': [1],
+                'MostRecentVisit': pd.to_datetime(['2023-02-03'])
+            })}
+        },
+        {
+            'input': {
+                'customer_df': pd.DataFrame({
+                    'CustomerID': ['C', 'C', 'D'],
+                    'PurchaseAmount': [100, 200, 300],
+                    'VisitTimestamp': ['2023-03-01', '2023-03-02', '2023-03-03']
+                }),
+                'min_purchase': 250
+            },
+            'expected': {'output': pd.DataFrame({
+                'CustomerID': ['D'],
+                'TotalPurchases': [300],
+                'NumberVisits': [1],
+                'MostRecentVisit': pd.to_datetime(['2023-03-03'])
+            })}
+        }
+    ]
+})
+
+# Create a function `transform_financial_data` that processes a DataFrame `financial_df` including columns 'AccountID', 'TransactionDate', 'Amount'. Parse 'TransactionDate' into datetime and set as index; Filter 'Amount' to exclude NaN and zero values; Extract month and year from 'TransactionDate' into new columns; Group by 'AccountID' and 'Year' to summarize monthly 'Amount' into sum and mean, returning a structured DataFrame;
+check_pandas_173 = functions_input_output_checker({
+    'transform_financial_data': [
+        {
+            'input': {
+                'financial_df': pd.DataFrame({
+                    'AccountID': ['A1', 'A1', 'B1'],
+                    'TransactionDate': ['2023-01-15', '2023-01-20', '2023-02-10'],
+                    'Amount': [100.0, 200.0, 300.0]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'AccountID': ['A1', 'B1'],
+                'Year': pd.Series([2023, 2023], dtype='int32'),
+                'Month': pd.Series([1, 2], dtype='int32'),
+                'TotalAmount': [300.0, 300.0],
+                'AverageAmount': [150.0, 300.0]
+            })}
+        },
+        {
+            'input': {
+                'financial_df': pd.DataFrame({
+                    'AccountID': ['B1', 'B1', 'C1'],
+                    'TransactionDate': ['2023-03-15', '2023-03-20', '2023-03-10'],
+                    'Amount': [0.0, 200.0, np.nan]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'AccountID': ['B1'],
+                'Year': pd.Series([2023], dtype='int32'),
+                'Month': pd.Series([3], dtype='int32'),
+                'TotalAmount': [200.0],
+                'AverageAmount': [200.0]
+            })}
+        },
+        {
+            'input': {
+                'financial_df': pd.DataFrame({
+                    'AccountID': ['C1', 'C1', 'D1'],
+                    'TransactionDate': ['2024-01-15', '2024-01-20', '2024-01-10'],
+                    'Amount': [100.0, 200.0, 300.0]
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'AccountID': ['C1', 'D1'],
+                'Year': pd.Series([2024, 2024], dtype='int32'),
+                'Month': pd.Series([1, 1], dtype='int32'),
+                'TotalAmount': [300.0, 300.0],
+                'AverageAmount': [150.0, 300.0]
+            })}
+        }
+    ]
+})
+
+# Implement a function `aggregate_weather_data` for a DataFrame `weather_df` with fields 'StationID', 'Temp', 'Humidity', 'ObservationTime'. Convert 'ObservationTime' to a DateTimeIndex; Filter to retain records with positive 'Temp' and 'Humidity'; Resample to daily frequency, taking the mean for each day; Return a DataFrame grouped by 'StationID' with columns for daily average 'Temp' and 'Humidity';
+check_pandas_174 = functions_input_output_checker({
+    'aggregate_weather_data': [
+        {
+            'input': {
+                'weather_df': pd.DataFrame({
+                    'StationID': ['S1', 'S1', 'S2'],
+                    'Temp': [25.5, 26.0, 24.0],
+                    'Humidity': [60.0, 65.0, 70.0],
+                    'ObservationTime': ['2023-01-01 08:00', '2023-01-01 16:00', '2023-01-01 12:00']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'StationID': ['S1', 'S2'],
+                'Date': pd.to_datetime(['2023-01-01', '2023-01-01']),
+                'Temp': pd.Series([25.75, 24.0], dtype='float64'),
+                'Humidity': pd.Series([62.5, 70.0], dtype='float64')
+            })}
+        },
+        {
+            'input': {
+                'weather_df': pd.DataFrame({
+                    'StationID': ['S2', 'S2', 'S3'],
+                    'Temp': [-1.0, 22.0, 23.0],
+                    'Humidity': [50.0, 55.0, -5.0],
+                    'ObservationTime': ['2023-02-01 10:00', '2023-02-01 14:00', '2023-02-01 18:00']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'StationID': ['S2'],
+                'Date': pd.to_datetime(['2023-02-01']),
+                'Temp': pd.Series([22.0], dtype='float64'),
+                'Humidity': pd.Series([55.0], dtype='float64'),
+            })}
+        },
+        {
+            'input': {
+                'weather_df': pd.DataFrame({
+                    'StationID': ['S1', 'S1', 'S2'],
+                    'Temp': [28.0, 29.0, 27.0],
+                    'Humidity': [75.0, 80.0, 85.0],
+                    'ObservationTime': ['2023-03-01 09:00', '2023-03-01 15:00', '2023-03-02 12:00']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'StationID': ['S1', 'S2'],
+                'Date': pd.to_datetime(['2023-03-01', '2023-03-02']),
+                'Temp': pd.Series([28.5, 27.0], dtype='float64'),
+                'Humidity': pd.Series([77.5, 85.0], dtype='float64'),
+            })}
+        }
+    ]
+})
+
+# Design a function `standardize_student_record` to clean a DataFrame `student_df` featuring 'Name', 'Score', 'SubmissionDate'. Standardize 'Name' to have a capitalized first letter; Address missing 'Score' values by assigning the median score; Standardize 'SubmissionDate' to a consistent format and compute 'DaysSinceSubmission'; Return a DataFrame with standardized names, computed days since submission, and filled scores;
+check_pandas_175 = functions_input_output_checker({
+    'standardize_student_record': [
+        {
+            'input': {
+                'student_df': pd.DataFrame({
+                    'Name': ['john doe', 'MARY SMITH', 'bob wilson'],
+                    'Score': [85.0, np.nan, 90.0],
+                    'SubmissionDate': ['2024-01-15', '2024-01-16', '2024-01-17']
+                }),
+                'current_date': '2024-01-20'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Name': ['John Doe', 'Mary Smith', 'Bob Wilson'],
+                'SubmissionDate': pd.to_datetime(['2024-01-15', '2024-01-16', '2024-01-17']),
+                'DaysSinceSubmission': pd.Series([5, 4, 3], dtype='int32'),
+                'Score': pd.Series([85.0, 87.5, 90.0], dtype='float64')
+            })}
+        },
+        {
+            'input': {
+                'student_df': pd.DataFrame({
+                    'Name': ['alice GREEN', 'TOM BROWN', 'sam black'],
+                    'Score': [np.nan, np.nan, 95.0],
+                    'SubmissionDate': ['2024-02-01', '2024-02-02', '2024-02-03']
+                }),
+                'current_date': '2024-02-05'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Name': ['Alice Green', 'Tom Brown', 'Sam Black'],
+                'SubmissionDate': pd.to_datetime(['2024-02-01', '2024-02-02', '2024-02-03']),
+                'DaysSinceSubmission': pd.Series([4, 3, 2], dtype='int32'),
+                'Score': pd.Series([95.0, 95.0, 95.0], dtype='float64')
+            })}
+        },
+        {
+            'input': {
+                'student_df': pd.DataFrame({
+                    'Name': ['emma JONES', 'PETER white', 'lisa GRAY'],
+                    'Score': [88.0, 92.0, np.nan],
+                    'SubmissionDate': ['2024-03-10', '2024-03-11', '2024-03-12']
+                }),
+                'current_date': '2024-03-15'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Name': ['Emma Jones', 'Peter White', 'Lisa Gray'],
+                'SubmissionDate': pd.to_datetime(['2024-03-10', '2024-03-11', '2024-03-12']),
+                'DaysSinceSubmission': pd.Series([5, 4, 3], dtype='int32'),
+                'Score': pd.Series([88.0, 92.0, 90.0], dtype='float64')
+            })}
+        }
+    ]
+})
+
+# Write a function `construct_inventory_report` that takes a DataFrame `inventory_df` with 'ItemID', 'Quantity', 'RestockDate'. Parse 'RestockDate' to ensure it's in datetime format; Identify items needing restock by checking 'Quantity' against the `threshold`; Provide a summary count of items needing restock by month; Return a detailed DataFrame with 'ItemID', 'Quantity', 'DaysUntilRestock', plus a monthly summary DataFrame;
+check_pandas_176 = functions_input_output_checker({
+    'construct_inventory_report': [
+        {
+            'input': {
+                'inventory_df': pd.DataFrame({
+                    'ItemID': ['A101', 'A102', 'A103'],
+                    'Quantity': [5, 15, 3],
+                    'RestockDate': ['2024-02-01', '2024-02-15', '2024-02-28']
+                }),
+                'threshold': 10,
+                'current_date': '2024-01-15'
+            },
+            'expected': {'output': {
+                'details': pd.DataFrame({
+                    'ItemID': ['A101', 'A102', 'A103'],
+                    'Quantity': pd.Series([5, 15, 3], dtype='int32'),
+                    'DaysUntilRestock': pd.Series([17, 31, 44], dtype='int32'),
+                    'NeedsRestock': pd.Series([True, False, True], dtype='bool')
+                }),
+                'monthly_summary': pd.DataFrame({
+                    'Month': pd.to_datetime(['2024-02-01']),
+                    'ItemsNeedingRestock': pd.Series([2], dtype='int32')
+                })
+            }}
+        },
+        {
+            'input': {
+                'inventory_df': pd.DataFrame({
+                    'ItemID': ['B201', 'B202', 'B203'],
+                    'Quantity': [8, 12, 7],
+                    'RestockDate': ['2024-03-01', '2024-04-01', '2024-03-15']
+                }),
+                'threshold': 9,
+                'current_date': '2024-02-15'
+            },
+            'expected': {'output': {
+                'details': pd.DataFrame({
+                    'ItemID': ['B201', 'B202', 'B203'],
+                    'Quantity': pd.Series([8, 12, 7], dtype='int32'),
+                    'DaysUntilRestock': pd.Series([15, 46, 29], dtype='int32'),
+                    'NeedsRestock': pd.Series([True, False, True], dtype='bool')
+                }),
+                'monthly_summary': pd.DataFrame({
+                    'Month': pd.to_datetime(['2024-03-01']),
+                    'ItemsNeedingRestock': pd.Series([2], dtype='int32')
+                })
+            }}
+        },
+        {
+            'input': {
+                'inventory_df': pd.DataFrame({
+                    'ItemID': ['C301', 'C302', 'C303'],
+                    'Quantity': [20, 5, 6],
+                    'RestockDate': ['2024-05-01', '2024-05-15', '2024-05-30']
+                }),
+                'threshold': 7,
+                'current_date': '2024-04-01'
+            },
+            'expected': {'output': {
+                'details': pd.DataFrame({
+                    'ItemID': ['C301', 'C302', 'C303'],
+                    'Quantity': pd.Series([20, 5, 6], dtype='int32'),
+                    'DaysUntilRestock': pd.Series([30, 44, 59], dtype='int32'),
+                    'NeedsRestock': pd.Series([False, True, True], dtype='bool')
+                }),
+                'monthly_summary': pd.DataFrame({
+                    'Month': pd.to_datetime(['2024-05-01']),
+                    'ItemsNeedingRestock': pd.Series([2], dtype='int32')
+                })
+            }}
+        }
+    ]
+})
+
+# Develop a function `optimize_sales_forecast` that works on DataFrame `forecast_df` with columns 'Product', 'ProjectedSales', 'ForecastDate'. Convert 'ForecastDate' to DateTime format; Apply forward fill to handle missing 'ProjectedSales' values; Conduct a rolling window analysis to compute the 3-month moving average of sales; Return an extended DataFrame with moving averages along with original columns;
+check_pandas_177 = functions_input_output_checker({
+    'optimize_sales_forecast': [
+        {
+            'input': {
+                'forecast_df': pd.DataFrame({
+                    'Product': ['A', 'A', 'A', 'A'],
+                    'ProjectedSales': [100.0, np.nan, 120.0, 130.0],
+                    'ForecastDate': ['2024-01-01', '2024-02-01', '2024-03-01', '2024-04-01']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Product': ['A', 'A', 'A', 'A'],
+                'ForecastDate': pd.to_datetime(['2024-01-01', '2024-02-01', '2024-03-01', '2024-04-01']),
+                'ProjectedSales': pd.Series([100.0, 100.0, 120.0, 130.0], dtype='float64'),
+                'MovingAverage': pd.Series([100.0, 100.0, 106.67, 116.67], dtype='float64')
+            })}
+        },
+        {
+            'input': {
+                'forecast_df': pd.DataFrame({
+                    'Product': ['B', 'B', 'B', 'B'],
+                    'ProjectedSales': [200.0, 220.0, np.nan, np.nan],
+                    'ForecastDate': ['2024-02-01', '2024-03-01', '2024-04-01', '2024-05-01']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Product': ['B', 'B', 'B', 'B'],
+                'ForecastDate': pd.to_datetime(['2024-02-01', '2024-03-01', '2024-04-01', '2024-05-01']),
+                'ProjectedSales': pd.Series([200.0, 220.0, 220.0, 220.0], dtype='float64'),
+                'MovingAverage': pd.Series([200.0, 210.0, 213.33, 220.0], dtype='float64')
+            })}
+        },
+        {
+            'input': {
+                'forecast_df': pd.DataFrame({
+                    'Product': ['C', 'C', 'C', 'C', 'C'],
+                    'ProjectedSales': [150.0, np.nan, 180.0, np.nan, 200.0],
+                    'ForecastDate': ['2024-03-01', '2024-04-01', '2024-05-01', '2024-06-01', '2024-07-01']
+                })
+            },
+            'expected': {'output': pd.DataFrame({
+                'Product': ['C', 'C', 'C', 'C', 'C'],
+                'ForecastDate': pd.to_datetime(['2024-03-01', '2024-04-01', '2024-05-01', '2024-06-01', '2024-07-01']),
+                'ProjectedSales': pd.Series([150.0, 150.0, 180.0, 180.0, 200.0], dtype='float64'),
+                'MovingAverage': pd.Series([150.0, 150.0, 160.0, 170.0, 186.67], dtype='float64')
+            })}
+        }
+    ]
+})
+
+
+# Create a function `summarize_employee_performance` that processes DataFrame `performance_df` with 'EmployeeID', 'Score', 'ReviewDate'. Ensure 'ReviewDate' is converted into a datetime object; Replace missing 'Score' with the lowest non-zero score; Group by 'EmployeeID' to compute total and average score; Generate a DataFrame highlighting top performers with scores above a specified percentile score; Audit history, including evaluation of performance improvement over time;
+check_pandas_178 = functions_input_output_checker({
+    'summarize_employee_performance': [
+        {
+            'input': {
+                'performance_df': pd.DataFrame({
+                    'EmployeeID': ['E1', 'E1', 'E2'],
+                    'Score': [85.0, np.nan, 90.0],
+                    'ReviewDate': ['2023-01-15', '2023-07-15', '2023-01-15']
+                }),
+                'percentile_threshold': 75
+            },
+            'expected': {'output': {
+                'summary': pd.DataFrame({
+                    'EmployeeID': ['E1', 'E2'],
+                    'TotalScore': pd.Series([170.0, 90.0], dtype='float64'),
+                    'AverageScore': pd.Series([85.0, 90.0], dtype='float64'),
+                    'ReviewCount': pd.Series([2, 1], dtype='int32'),
+                    'IsTopPerformer': pd.Series([False, True], dtype='bool')
+                }),
+                'improvement': pd.DataFrame({
+                    'EmployeeID': ['E1'],
+                    'FirstScore': pd.Series([85.0], dtype='float64'),
+                    'LastScore': pd.Series([85.0], dtype='float64'),
+                    'ScoreChange': pd.Series([0.0], dtype='float64')
+                })
+            }}
+        },
+        {
+            'input': {
+                'performance_df': pd.DataFrame({
+                    'EmployeeID': ['E2', 'E2', 'E3'],
+                    'Score': [75.0, 95.0, np.nan],
+                    'ReviewDate': ['2023-02-01', '2023-08-01', '2023-02-01']
+                }),
+                'percentile_threshold': 80
+            },
+            'expected': {'output': {
+                'summary': pd.DataFrame({
+                    'EmployeeID': ['E2', 'E3'],
+                    'TotalScore': pd.Series([170.0, 75.0], dtype='float64'),
+                    'AverageScore': pd.Series([85.0, 75.0], dtype='float64'),
+                    'ReviewCount': pd.Series([2, 1], dtype='int32'),
+                    'IsTopPerformer': pd.Series([True, False], dtype='bool')
+                }),
+                'improvement': pd.DataFrame({
+                    'EmployeeID': ['E2'],
+                    'FirstScore': pd.Series([75.0], dtype='float64'),
+                    'LastScore': pd.Series([95.0], dtype='float64'),
+                    'ScoreChange': pd.Series([20.0], dtype='float64')
+                })
+            }}
+        },
+        {
+            'input': {
+                'performance_df': pd.DataFrame({
+                    'EmployeeID': ['E3', 'E3', 'E4'],
+                    'Score': [80.0, 85.0, 70.0],
+                    'ReviewDate': ['2023-03-01', '2023-09-01', '2023-03-01']
+                }),
+                'percentile_threshold': 70
+            },
+            'expected': {'output': {
+                'summary': pd.DataFrame({
+                    'EmployeeID': ['E3', 'E4'],
+                    'TotalScore': pd.Series([165.0, 70.0], dtype='float64'),
+                    'AverageScore': pd.Series([82.5, 70.0], dtype='float64'),
+                    'ReviewCount': pd.Series([2, 1], dtype='int32'),
+                    'IsTopPerformer': pd.Series([True, False], dtype='bool')
+                }),
+                'improvement': pd.DataFrame({
+                    'EmployeeID': ['E3'],
+                    'FirstScore': pd.Series([80.0], dtype='float64'),
+                    'LastScore': pd.Series([85.0], dtype='float64'),
+                    'ScoreChange': pd.Series([5.0], dtype='float64')
+                })
+            }}
+        }
+    ]
+})
+
+# Create a function `double_series_values` that takes a Series `input_series` and returns a Series with all values doubled.
+check_pandas_179 = functions_input_output_checker({
+    'double_series_values': [
+        {
+            'input': {'input_series': pd.Series([1, 2, 3])},
+            'expected': {'output': pd.Series([2, 4, 6])}
+        },
+        {
+            'input': {'input_series': pd.Series([10, 20, 30])},
+            'expected': {'output': pd.Series([20, 40, 60])}
+        },
+        {
+            'input': {'input_series': pd.Series([100, 200, 300])},
+            'expected': {'output': pd.Series([200, 400, 600])}
+        }
+    ]
+})
+
+# Write a function `replace_zeros_with_mean` that takes a Series `data_series` and replaces all 0 values with the mean of the Series, returning the modified Series.
+check_pandas_180 = functions_input_output_checker({
+    'replace_zeros_with_mean': [
+        {
+            'input': {'data_series': pd.Series([1, 2, 0, 4, 5])},
+            'expected': {'output': pd.Series([1, 2, 3, 4, 5])}
+        },
+        {
+            'input': {'data_series': pd.Series([10, 20, 0, 40, 50])},
+            'expected': {'output': pd.Series([10, 20, 30, 40, 50])}
+        },
+        {
+            'input': {'data_series': pd.Series([100, 200, 0, 400, 500])},
+            'expected': {'output': pd.Series([100, 200, 300, 400, 500])}
+        }
+    ]
+})
+
+# Design a function `standardize_column_names` that accepts a DataFrame `df` and returns it with all column names set to lowercase.
+check_pandas_181 = functions_input_output_checker({
+    'standardize_column_names': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'a': [1, 2, 3],
+                'b': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'x': [10, 20, 30],
+                'y': [100, 200, 300]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'm': [100, 200, 300],
+                'n': [1000, 2000, 3000]
+            })}
+        }
+    ]
+})
+
+# Implement a function `drop_duplicate_rows` that receives a DataFrame `df` and returns it with duplicate rows removed.
+check_pandas_182 = functions_input_output_checker({
+    'drop_duplicate_rows': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3, 1],
+                'B': [10, 20, 30, 10]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30, 10],
+                'Y': [100, 200, 300, 100]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300, 100],
+                'N': [1000, 2000, 3000, 1000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })}
+        }
+    ]
+})
+
+# Create a function `calculate_column_sums` that takes a DataFrame `df` and returns a Series containing the sum of each column.
+check_pandas_183 = functions_input_output_checker({
+    'calculate_column_sums': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.Series([6, 60], index=['A', 'B'])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.Series([60, 600], index=['X', 'Y'])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.Series([600, 6000], index=['M', 'N'])}
+        }
+    ]
+})
+
+# Write a function `extract_date_parts` that takes a Series `dates` of datetime objects and returns a DataFrame with columns 'Year', 'Month', and 'Day'.
+check_pandas_184 = functions_input_output_checker({
+    'extract_date_parts': [
+        {
+            'input': {'dates': pd.to_datetime([pd.Timestamp(2023, 1, 1), pd.Timestamp(2023, 2, 2), pd.Timestamp(2023, 3, 3)])},
+            'expected': {'output': pd.DataFrame({
+                'Year': pd.Series([2023, 2023, 2023], dtype='int32'),
+                'Month': pd.Series([1, 2, 3], dtype='int32'),
+                'Day': pd.Series([1, 2, 3], dtype='int32')
+            })}
+        },
+        {
+            'input': {'dates': pd.to_datetime([pd.Timestamp(2023, 4, 4), pd.Timestamp(2023, 5, 5), pd.Timestamp(2023, 6, 6)])},
+            'expected': {'output': pd.DataFrame({
+                'Year': pd.Series([2023, 2023, 2023], dtype='int32'),
+                'Month': pd.Series([4, 5, 6], dtype='int32'),
+                'Day': pd.Series([4, 5, 6], dtype='int32')
+            })}
+        },
+        {
+            'input': {'dates': pd.to_datetime([pd.Timestamp(2023, 7, 7), pd.Timestamp(2023, 8, 8), pd.Timestamp(2023, 9, 9)])},
+            'expected': {'output': pd.DataFrame({
+                'Year': pd.Series([2023, 2023, 2023], dtype='int32'),
+                'Month': pd.Series([7, 8, 9], dtype='int32'),
+                'Day': pd.Series([7, 8, 9], dtype='int32')
+            })}
+        }
+    ]
+})
+
+# Define a function `concat_strings_in_column` that, given a DataFrame `df` and a column `text_col`, concatenates all strings in that column with a space in between, returning the result string.
+check_pandas_185 = functions_input_output_checker({
+    'concat_strings_in_column': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Text': ['hello', ' yolo', 'olo']
+                }),
+                'text_col': 'Text'
+            },
+            'expected': {'output': 'hello  yolo olo'}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Text': ['hi', ' there', ' you']
+                }),
+                'text_col': 'Text'
+            },
+            'expected': {'output': 'hi  there  you'}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Text': ['hey', ' there', ' you']
+                }),
+                'text_col': 'Text'
+            },
+            'expected': {'output': 'hey  there  you'}
+        }
+    ]
+})
+
+# Implement a function `sort_by_index_descending` that accepts a DataFrame `df` and returns it sorted by its index in descending order.
+check_pandas_186 = functions_input_output_checker({
+    'sort_by_index_descending': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [3, 2, 1],
+                'B': [30, 20, 10]
+            }, index=[2, 1, 0])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'X': [30, 20, 10],
+                'Y': [300, 200, 100]
+            }, index=[2, 1, 0])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'M': [300, 200, 100],
+                'N': [3000, 2000, 1000]
+            }, index=[2, 1, 0])}
+        }
+    ]
+})
+
+# Create a function `filter_by_threshold` to take a DataFrame `df` and a column name `col`, returning a DataFrame including only rows where `col` is above a given threshold.
+check_pandas_187 = functions_input_output_checker({
+    'filter_by_threshold': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'col': 'A',
+                'threshold': 2
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [3],
+                'B': [30]
+            }, index=[2])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'col': 'Y',
+                'threshold': 100
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [20, 30],
+                'Y': [200, 300]
+            }, index=[1, 2])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'col': 'M',
+                'threshold': 300
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': pd.Series(dtype='int64'),
+                'N': pd.Series(dtype='int64')
+            })}
+        }
+    ]
+})
+
+# Write a function `get_unique_values` that takes a DataFrame `df` and a column `col`, returning a sorted array of unique values in the specified column.
+check_pandas_188 = functions_input_output_checker({
+    'get_unique_values': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'col': 'A'
+            },
+            'expected': {'output': np.array([1, 2, 3])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'col': 'Y'
+            },
+            'expected': {'output': np.array([100, 200, 300])}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'col': 'M'
+            },
+            'expected': {'output': np.array([100, 200, 300])}
+        }
+    ]
+})
+
+# Develop a function `append_row_to_dataframe` that takes a DataFrame `df` and a dictionary `row_dict`, appending the dictionary as a new row, and returning the updated DataFrame.
+check_pandas_189 = functions_input_output_checker({
+    'append_row_to_dataframe': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'A': [1, 2, 3],
+                    'B': [10, 20, 30]
+                }),
+                'row_dict': {'A': 4, 'B': 40}
+            },
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3, 4],
+                'B': [10, 20, 30, 40]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'X': [10, 20, 30],
+                    'Y': [100, 200, 300]
+                }),
+                'row_dict': {'X': 40, 'Y': 400}
+            },
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30, 40],
+                'Y': [100, 200, 300, 400]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'M': [100, 200, 300],
+                    'N': [1000, 2000, 3000]
+                }),
+                'row_dict': {'M': 400, 'N': 4000}
+            },
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300, 400],
+                'N': [1000, 2000, 3000, 4000]
+            })}
+        }
+    ]
+})
+
+# Construct a function `reset_index_and_name` that takes a DataFrame `df` and returns it with its index reset and the name of the index set to 'NewIndex'.
+check_pandas_190 = functions_input_output_checker({
+    'reset_index_and_name': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'index': [0, 1, 2],
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            }, index=pd.Series([0, 1, 2], name='NewIndex'))}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'index': [0, 1, 2],
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            }, index=pd.Series([0, 1, 2], name='NewIndex'))}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'index': [0, 1, 2],
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            }, index=pd.Series([0, 1, 2], name='NewIndex'))}
+        }
+    ]
+})
+
+# Create a function `swap_dataframe_columns` that accepts a DataFrame `df` and two column names `col1` and `col2`, swapping the values of these columns.
+check_pandas_191 = functions_input_output_checker({
+    'swap_dataframe_columns': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            }), 'col1': 'A', 'col2': 'B'},
+            'expected': {'output': pd.DataFrame({
+                'A': [10, 20, 30],
+                'B': [1, 2, 3]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            }), 'col1': 'X', 'col2': 'Y'},
+            'expected': {'output': pd.DataFrame({
+                'X': [100, 200, 300],
+                'Y': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            }), 'col1': 'M', 'col2': 'N'},
+            'expected': {'output': pd.DataFrame({
+                'M': [1000, 2000, 3000],
+                'N': [100, 200, 300]
+            })}
+        }
+    ]
+})
+
+# Write a function `rename_index_label` which receives a DataFrame `df`, renames its first index label to 'FirstRow', and returns the DataFrame.
+check_pandas_192 = functions_input_output_checker({
+    'rename_index_label': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            }, index=['FirstRow', 1, 2])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            }, index=['FirstRow', 1, 2])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            }, index=['FirstRow', 1, 2])}
+        }
+    ]
+})
+
+# Define a function `calculate_frequency_table` that, given a DataFrame `df` and a column `cat_col`, returns a DataFrame with a frequency count of each category in `cat_col`.
+check_pandas_193 = functions_input_output_checker({
+    'calculate_frequency_table': [
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Category': ['A', 'A', 'B', 'C']
+                }),
+                'cat_col': 'Category'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Category': ['A', 'B', 'C'],
+                'count': [2, 1, 1]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Category': ['A', 'B', 'B', 'C']
+                }),
+                'cat_col': 'Category'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Category': ['B', 'A', 'C'],
+                'count': [2, 1, 1]
+            })}
+        },
+        {
+            'input': {
+                'df': pd.DataFrame({
+                    'Category': ['A', 'B', 'C', 'C']
+                }),
+                'cat_col': 'Category'
+            },
+            'expected': {'output': pd.DataFrame({
+                'Category': ['C', 'A', 'B'],
+                'count': [2, 1, 1]
+            })}
+        }
+    ]
+})
+
+# Implement a function `remove_negative_entries` that takes a Series `numeric_series` and returns a Series with all negative entries removed.
+check_pandas_194 = functions_input_output_checker({
+    'remove_negative_entries': [
+        {
+            'input': {'numeric_series': pd.Series([1, -2, 3])},
+            'expected': {'output': pd.Series([1, 3], index=[0, 2])}
+        },
+        {
+            'input': {'numeric_series': pd.Series([10, -20, 30])},
+            'expected': {'output': pd.Series([10, 30], index=[0, 2])}
+        },
+        {
+            'input': {'numeric_series': pd.Series([100, -200, 300])},
+            'expected': {'output': pd.Series([100, 300], index=[0, 2])}
+        }
+    ]
+})
+
+# Write a function `sort_column_values` that takes a DataFrame `df` and column name `col`, returning `df` sorted by `col` values in ascending order.
+check_pandas_195 = functions_input_output_checker({
+    'sort_column_values': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [3, 2, 1],
+                'B': [30, 20, 10]
+            }), 'col': 'A'},
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            }, index=[2, 1, 0])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [30, 20, 10],
+                'Y': [300, 200, 100]
+            }), 'col': 'X'},
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            }, index=[2, 1, 0])}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [300, 200, 100],
+                'N': [3000, 2000, 1000]
+            }), 'col': 'M'},
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            }, index=[2, 1, 0])}
+        }
+    ]
+})
+
+# Design a function `drop_columns_by_name` that accepts a DataFrame `df` and a list of column names `drop_cols`, removing these columns and returning the modified DataFrame.
+check_pandas_196 = functions_input_output_checker({
+    'drop_columns_by_name': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30],
+                'C': [100, 200, 300]
+            }), 'drop_cols': ['A', 'C']},
+            'expected': {'output': pd.DataFrame({
+                'B': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300],
+                'Z': [1000, 2000, 3000]
+            }), 'drop_cols': ['Y', 'Z']},
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000],
+                'O': [10000, 20000, 30000]
+            }), 'drop_cols': ['N', 'O']},
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300]
+            })}
+        }
+    ]
+})
+
+# Develop a function `strip_whitespace` that takes a DataFrame `df` and trims leading and trailing whitespace from all string entries.
+check_pandas_197 = functions_input_output_checker({
+    'strip_whitespace': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [' 1', '2 ', ' 3 '],
+                'B': [' 10', '20 ', ' 30']
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': ['1', '2', '3'],
+                'B': ['10', '20', '30']
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [' 10', '20 ', ' 30 '],
+                'Y': [' 100', '200 ', ' 300']
+            })},
+            'expected': {'output': pd.DataFrame({
+                'X': ['10', '20', '30'],
+                'Y': ['100', '200', '300']
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [' 100', '200 ', ' 300 '],
+                'N': [' 1000', '2000 ', ' 3000']
+            })},
+            'expected': {'output': pd.DataFrame({
+                'M': ['100', '200', '300'],
+                'N': ['1000', '2000', '3000']
+            })}
+        }
+    ]
+})
+
+# Create a function `duplicate_last_column` that receives a DataFrame `df` and duplicates its last column, appending the duplicate to the right of the DataFrame.
+check_pandas_198 = functions_input_output_checker({
+    'duplicate_last_column': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'A': [1, 2, 3],
+                'B': [10, 20, 30],
+                'B_copy': [10, 20, 30]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'X': [10, 20, 30],
+                'Y': [100, 200, 300],
+                'Y_copy': [100, 200, 300]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000]
+            })},
+            'expected': {'output': pd.DataFrame({
+                'M': [100, 200, 300],
+                'N': [1000, 2000, 3000],
+                'N_copy': [1000, 2000, 3000]
+            })}
+        }
+    ]
+})
+
+# Write a function `filter_top_n_rows_by_column` that takes a DataFrame `df`, a column `col`, and an integer `n`, returning the top n rows sorted by values in `col`.
+check_pandas_199 = functions_input_output_checker({
+    'filter_top_n_rows_by_column': [
+        {
+            'input': {'df': pd.DataFrame({
+                'A': [3, 2, 1],
+                'B': [30, 20, 10]
+            }), 'col': 'A', 'n': 2},
+            'expected': {'output': pd.DataFrame({
+                'A': [3, 2],
+                'B': [30, 20]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'X': [30, 20, 10],
+                'Y': [300, 200, 100]
+            }), 'col': 'X', 'n': 1},
+            'expected': {'output': pd.DataFrame({
+                'X': [30],
+                'Y': [300]
+            })}
+        },
+        {
+            'input': {'df': pd.DataFrame({
+                'M': [300, 200, 100],
+                'N': [3000, 2000, 1000]
+            }), 'col': 'M', 'n': 3},
+            'expected': {'output': pd.DataFrame({
+                'M': [300, 200, 100],
+                'N': [3000, 2000, 1000]
+            })}
+        }
+    ]
+})
+
+# Define a function `calculate_range_of_numeric_series` that takes a Series `numeric_series` and returns the range (max - min) of its values.
+check_pandas_200 = functions_input_output_checker({
+    'calculate_range_of_numeric_series': [
+        {
+            'input': {'numeric_series': pd.Series([1, 2, 3])},
+            'expected': {'output': np.int64(2)}
+        },
+        {
+            'input': {'numeric_series': pd.Series([10, 20, 30])},
+            'expected': {'output': np.int64(20)}
+        },
+        {
+            'input': {'numeric_series': pd.Series([100, 200, 300])},
+            'expected': {'output': np.int64(200)}
+        }
+    ]
+})
