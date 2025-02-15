@@ -20,6 +20,7 @@ class Task1:
         De asemenea, clasa `UtilizatorAdmin` trebuie să conțină metoda `modifica_date_utilizator` care să returneze
         string-ul "*nume-utilizator* poate modifica datele utilizatorilor.".
     """
+
     def __init__(self, class_user, class_user_manager, class_user_admin):
         self.class_user = class_user
         self.class_user_manager = class_user_manager
@@ -68,6 +69,7 @@ class Task2:
         Clasa `Sistem` trebuie să conțină și metoda `modifica_nivel_acces` care va primi id-ul utilizatorului
         și noul nivel de acces al utilizatorului și va modifica nivelul de acces al utilizatorului respectiv.
     """
+
     def __init__(self, class_user, class_sistem):
         self.class_user = class_user
         self.class_sistem = class_sistem
@@ -105,6 +107,7 @@ class Task3:
         Metoda `account_view` va fi o metodă de instanță care va avea acces la self și va returna string-ul
         "Vizualizare aplicație user *versiune-aplicatie*" utilizând atributul instanței.
     """
+
     def __init__(self, class_app):
         self.class_app = class_app
 
@@ -121,6 +124,7 @@ class Task3:
 
 class Lesson14:
     """Test class for checking the implementation of tasks in lesson 13 of the Python Odyssey Bootcamp."""
+
     def __init__(self):
         self.status_tasks = {f"task_{i}": False for i in range(1, 4)}
 

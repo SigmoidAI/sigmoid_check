@@ -12,6 +12,7 @@ class Task1:
     - __setitem__ va permite modificarea elementelor din listă folosind indexul (e.g., container[0] = 5).
     - __add__ va permite combinarea a două instanțe de `DataContainer` într-o singură instanță.
     """
+
     def __init__(self, class_data_container):
         self.class_data_container = class_data_container
 
@@ -38,6 +39,7 @@ class Task2:
     - `ProdusContainer` va calcula produsul elementelor din listă.
     Ambele clase vor avea metoda `calculate` care va returna suma sau produsul elementelor.
     """
+
     def __init__(self, class_suma_container, class_produs_container, class_data_container):
         self.class_suma_container = class_suma_container
         self.class_produs_container = class_produs_container
@@ -61,6 +63,7 @@ class Task3:
     - `add_container` va permite adăugarea unui nou container în listă.
     - `__call__` va returna o listă cu valorile maxime ale fiecărui container.
     """
+
     def __init__(self, class_data_analysis, class_data_container):
         self.class_data_analysis = class_data_analysis
         self.class_data_container = class_data_container
@@ -88,6 +91,7 @@ class Task4:
     - `min` va returna valoarea minimă din toate containerele.
     - `sum` va returna suma elementelor din toate containerele.
     """
+
     def __init__(self, class_data_statistics, class_data_container):
         self.class_data_statistics = class_data_statistics
         self.class_data_container = class_data_container
@@ -116,6 +120,7 @@ class Task5:
     - `filter_under_mean` va returna o listă cu toate elementele care sunt mai mari decât media aritmetică
     a tuturor elementelor calculate cu metoda `mean` din clasa `DataStatistics`.
     """
+
     def __init__(self, class_data_filter, class_data_statistics, class_data_container):
         self.class_data_filter = class_data_filter
         self.class_data_statistics = class_data_statistics
@@ -137,6 +142,7 @@ class Task5:
 
 class Lesson15:
     """Test class for checking the implementation of tasks in lesson 15 of the Python Odyssey Bootcamp."""
+
     def __init__(self):
         self.status_tasks = {f"task_{i}": False for i in range(1, 6)}
 

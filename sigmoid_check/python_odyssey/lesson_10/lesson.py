@@ -1,5 +1,6 @@
 class Lesson10:
     "Test class for cheking the implementation of the tasks in lesson 10"
+
     def __init__(self):
         self.status_tasks = {f"task_{i}": False for i in range(1, 25)}
 
@@ -255,8 +256,11 @@ class Lesson10:
             student_output_1 = func(age_1)
             student_output_2 = func(age_2)
             student_output_3 = func(age_3)
-            if (student_output_1 == expected_output_1 and student_output_2 == expected_output_2
-                    and student_output_3 == expected_output_3):
+            if (
+                student_output_1 == expected_output_1
+                and student_output_2 == expected_output_2
+                and student_output_3 == expected_output_3
+            ):
                 self.status_tasks["task_14"] = True
                 return "Exercise 1: Correct! Well done."
             else:

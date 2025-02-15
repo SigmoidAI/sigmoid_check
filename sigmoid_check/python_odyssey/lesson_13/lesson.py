@@ -10,15 +10,16 @@ class Task1:
     print(telefon.pretul)                   # Voi putea accesa pretul obiectului creat
     print(telefon.anul_producerii)          # Voi putea accesa anul producerii obiectului creat
     """
+
     def __init__(self, class_to_test) -> None:
         self.class_to_test = class_to_test
 
     def check_task(self):
         try:
-            phone_test_1 = self.class_to_test('Samsung', 500, 300)
-            assert phone_test_1.numele == 'Samsung', 'Asigură-te că ai creat atributul numele'
-            assert phone_test_1.pretul == 500, 'Asigură-te că ai creat atributul pretul'
-            assert phone_test_1.anul_producerii == 300, 'Asigură-te că ai creat atributul anul_producerii'
+            phone_test_1 = self.class_to_test("Samsung", 500, 300)
+            assert phone_test_1.numele == "Samsung", "Asigură-te că ai creat atributul numele"
+            assert phone_test_1.pretul == 500, "Asigură-te că ai creat atributul pretul"
+            assert phone_test_1.anul_producerii == 300, "Asigură-te că ai creat atributul anul_producerii"
             return True
         except:
             return False
@@ -33,20 +34,21 @@ class Task2:
     Totodată aceasta va avea o metodă numită `upgrade_battery` care va primi un parametru `new_battery`
     și va actualiza valoarea bateriei telefonului.
     """
+
     def __init__(self, child, parent) -> None:
         self.class_to_test = child
         self.parent_class = parent
 
     def check_task(self):
         try:
-            phone_test_1 = self.class_to_test('Samsung', 500, 300, 4000, 128)
-            assert phone_test_1.baterie_mAh == 4000, 'Asigură-te că ai creat atributul baterie_mAh'
-            assert phone_test_1.memorie_GB == 128, 'Asigură-te că ai creat atributul memorie_GB'
-            assert issubclass(self.class_to_test, self.parent_class), 'Clasa nu mosteneste clasa parinte'
+            phone_test_1 = self.class_to_test("Samsung", 500, 300, 4000, 128)
+            assert phone_test_1.baterie_mAh == 4000, "Asigură-te că ai creat atributul baterie_mAh"
+            assert phone_test_1.memorie_GB == 128, "Asigură-te că ai creat atributul memorie_GB"
+            assert issubclass(self.class_to_test, self.parent_class), "Clasa nu mosteneste clasa parinte"
             phone_test_1.upgrade_memory(256)
-            assert phone_test_1.memorie_GB == 256, 'Metoda upgrade_memory nu functioneaza'
+            assert phone_test_1.memorie_GB == 256, "Metoda upgrade_memory nu functioneaza"
             phone_test_1.upgrade_battery(5000)
-            assert phone_test_1.baterie_mAh == 5000, 'Metoda upgrade_battery nu functioneaza'
+            assert phone_test_1.baterie_mAh == 5000, "Metoda upgrade_battery nu functioneaza"
             return True
         except:
             return False
@@ -61,20 +63,21 @@ class Task3:
     Totodată aceasta va avea o metodă numită `upgrade_os` care va primi un parametru `new_os`
     și va actualiza valoarea sistemului de operare al laptopului.
     """
+
     def __init__(self, child, parent) -> None:
         self.class_to_test = child
         self.parent_class = parent
 
     def check_task(self):
         try:
-            laptop_test_1 = self.class_to_test('Samsung', 500, 300, 'Windows', 'Intel i5')
-            assert laptop_test_1.sistem_de_operare == 'Windows', 'Asigură-te că ai creat atributul sistem_de_operare'
-            assert laptop_test_1.procesor == 'Intel i5', 'Asigură-te că ai creat atributul procesor'
-            assert issubclass(self.class_to_test, self.parent_class), 'Clasa nu mosteneste clasa parinte'
-            laptop_test_1.upgrade_processor('Intel i7')
-            assert laptop_test_1.procesor == 'Intel i7', 'Metoda upgrade_processor nu functioneaza'
-            laptop_test_1.upgrade_os('Windows 11')
-            assert laptop_test_1.sistem_de_operare == 'Windows 11', 'Metoda upgrade_os nu functioneaza'
+            laptop_test_1 = self.class_to_test("Samsung", 500, 300, "Windows", "Intel i5")
+            assert laptop_test_1.sistem_de_operare == "Windows", "Asigură-te că ai creat atributul sistem_de_operare"
+            assert laptop_test_1.procesor == "Intel i5", "Asigură-te că ai creat atributul procesor"
+            assert issubclass(self.class_to_test, self.parent_class), "Clasa nu mosteneste clasa parinte"
+            laptop_test_1.upgrade_processor("Intel i7")
+            assert laptop_test_1.procesor == "Intel i7", "Metoda upgrade_processor nu functioneaza"
+            laptop_test_1.upgrade_os("Windows 11")
+            assert laptop_test_1.sistem_de_operare == "Windows 11", "Metoda upgrade_os nu functioneaza"
             return True
         except:
             return False
@@ -89,20 +92,21 @@ class Task4:
     Totodată aceasta va avea o metodă numită `upgrade_autonomy` care va primi un parametru `new_autonomy`
     și va actualiza valoarea autonomiei trotinetei.
     """
+
     def __init__(self, child, parent) -> None:
         self.class_to_test = child
         self.parent_class = parent
 
     def check_task(self):
         try:
-            trotineta_test_1 = self.class_to_test('Samsung', 500, 300, 25, 30)
-            assert trotineta_test_1.viteza_maxima == 25, 'Asigură-te că ai creat atributul viteza_maxima'
-            assert trotineta_test_1.autonomie_km == 30, 'Asigură-te că ai creat atributul autonomie_km'
-            assert issubclass(self.class_to_test, self.parent_class), 'Clasa nu mosteneste clasa parinte'
+            trotineta_test_1 = self.class_to_test("Samsung", 500, 300, 25, 30)
+            assert trotineta_test_1.viteza_maxima == 25, "Asigură-te că ai creat atributul viteza_maxima"
+            assert trotineta_test_1.autonomie_km == 30, "Asigură-te că ai creat atributul autonomie_km"
+            assert issubclass(self.class_to_test, self.parent_class), "Clasa nu mosteneste clasa parinte"
             trotineta_test_1.upgrade_speed(30)
-            assert trotineta_test_1.viteza_maxima == 30, 'Metoda upgrade_speed nu functioneaza'
+            assert trotineta_test_1.viteza_maxima == 30, "Metoda upgrade_speed nu functioneaza"
             trotineta_test_1.upgrade_autonomy(40)
-            assert trotineta_test_1.autonomie_km == 40, 'Metoda upgrade_autonomy nu functioneaza'
+            assert trotineta_test_1.autonomie_km == 40, "Metoda upgrade_autonomy nu functioneaza"
             return True
         except:
             return False
@@ -131,6 +135,7 @@ class Task5:
     print(iphone.produs_conectat.numele) # Va returna numele produsului conectat
     print(iphone.produs_conectat.pretul) # Va returna prețul produsului conectat
     """
+
     def __init__(self, child, parent) -> None:
         self.class_to_test = child
         self.parent_class = parent
@@ -139,19 +144,23 @@ class Task5:
         try:
             iphone = self.class_to_test("Iphone", 15000, 2020, "negru")
             airpods = self.class_to_test("Airpods", 1000, 2021, "alb")
-            assert iphone.produs_conectat == 'nimic', \
-                'Asigură-te că ai creat atributul produs_conectat cu valoarea default "nimic"'
-            assert iphone.culoare == 'negru', 'Asigură-te că ai creat atributul culoare'
-            assert issubclass(self.class_to_test, self.parent_class), 'Clasa nu mosteneste clasa parinte'
-            assert iphone.combine_products(airpods) == 'Produsul nu poate fi conectat deoarece culorile nu coincid', \
-                'Metoda combine_products nu functioneaza'
+            assert (
+                iphone.produs_conectat == "nimic"
+            ), 'Asigură-te că ai creat atributul produs_conectat cu valoarea default "nimic"'
+            assert iphone.culoare == "negru", "Asigură-te că ai creat atributul culoare"
+            assert issubclass(self.class_to_test, self.parent_class), "Clasa nu mosteneste clasa parinte"
+            assert (
+                iphone.combine_products(airpods) == "Produsul nu poate fi conectat deoarece culorile nu coincid"
+            ), "Metoda combine_products nu functioneaza"
             airpods = self.class_to_test("Airpods", 1000, 2021, "negru")
-            assert iphone.combine_products(airpods) == 'Produsul a fost conectat cu succes', \
-                'Metoda combine_products nu functioneaza'
-            assert iphone.produs_conectat == airpods, 'Metoda combine_products nu functioneaza'
+            assert (
+                iphone.combine_products(airpods) == "Produsul a fost conectat cu succes"
+            ), "Metoda combine_products nu functioneaza"
+            assert iphone.produs_conectat == airpods, "Metoda combine_products nu functioneaza"
             iphone2 = self.class_to_test("Iphone", 15000, 2020, "negru", airpods)
-            assert iphone2.produs_conectat == airpods, ('Metoda combine_products nu functioneaza, parametrul '
-                                                        'produs_conectat nu este setat corect')
+            assert iphone2.produs_conectat == airpods, (
+                "Metoda combine_products nu functioneaza, parametrul " "produs_conectat nu este setat corect"
+            )
             return True
         except:
             return False
@@ -173,6 +182,7 @@ class Task6:
     și dacă se va printa pixel.produs_conectat se va returna obiectul home
     print(pixel.produs_conectat.numele) # Va returna numele produsului conectat
     """
+
     def __init__(self, child, parent) -> None:
         self.class_to_test = child
         self.parent_class = parent
@@ -181,16 +191,19 @@ class Task6:
         try:
             pixel = self.class_to_test("Pixel", 10000, 2020, "negru")
             home = self.class_to_test("Home", 500, 2021, "alb")
-            assert pixel.produs_conectat == 'nimic', \
-                'Asigură-te că ai creat atributul produs_conectat cu valoarea default "nimic"'
-            assert pixel.culoare == 'negru', 'Asigură-te că ai creat atributul culoare'
-            assert issubclass(self.class_to_test, self.parent_class), 'Clasa nu mosteneste clasa parinte'
-            assert pixel.combine_products(home) == 'Produsul a fost conectat cu succes', \
-                'Metoda combine_products nu functioneaza'
-            assert pixel.produs_conectat == home, 'Metoda combine_products nu functioneaza'
+            assert (
+                pixel.produs_conectat == "nimic"
+            ), 'Asigură-te că ai creat atributul produs_conectat cu valoarea default "nimic"'
+            assert pixel.culoare == "negru", "Asigură-te că ai creat atributul culoare"
+            assert issubclass(self.class_to_test, self.parent_class), "Clasa nu mosteneste clasa parinte"
+            assert (
+                pixel.combine_products(home) == "Produsul a fost conectat cu succes"
+            ), "Metoda combine_products nu functioneaza"
+            assert pixel.produs_conectat == home, "Metoda combine_products nu functioneaza"
             pixel2 = self.class_to_test("Pixel", 10000, 2020, "negru", home)
-            assert pixel2.produs_conectat == home, ('Metoda combine_products nu functioneaza, '
-                                                    'parametrul produs_conectat nu este setat corect')
+            assert pixel2.produs_conectat == home, (
+                "Metoda combine_products nu functioneaza, " "parametrul produs_conectat nu este setat corect"
+            )
             return True
         except:
             return False
@@ -210,6 +223,7 @@ class Task7:
     print(magazin.vinde_produs(iphone)) # Va returna textul "Produsul Iphone a fost vândut cu succes"
     print(magazin.returneaza_produs(iphone)) # Va returna textul "Produsul Iphone a fost returnat cu succes
     """
+
     def __init__(self, class_to_test, product_class) -> None:
         self.class_to_test = class_to_test
         self.product_class = product_class
@@ -218,10 +232,12 @@ class Task7:
         try:
             magazin = self.class_to_test()
             iphone = self.product_class("Ciao", 15000, 2020)
-            assert magazin.vinde_produs(iphone) == 'Produsul Ciao a fost vândut cu succes', \
-                'Metoda vinde_produs nu functioneaza'
-            assert magazin.returneaza_produs(iphone) == 'Produsul Ciao a fost returnat cu succes', \
-                'Metoda returneaza_produs nu functioneaza'
+            assert (
+                magazin.vinde_produs(iphone) == "Produsul Ciao a fost vândut cu succes"
+            ), "Metoda vinde_produs nu functioneaza"
+            assert (
+                magazin.returneaza_produs(iphone) == "Produsul Ciao a fost returnat cu succes"
+            ), "Metoda returneaza_produs nu functioneaza"
             return True
         except:
             return False
@@ -229,6 +245,7 @@ class Task7:
 
 class Lesson13:
     """Test class for checking the implementation of tasks in lesson 13 of the Python Odyssey Bootcamp."""
+
     def __init__(self):
         self.status_tasks = {f"task_{i}": False for i in range(1, 8)}
 
