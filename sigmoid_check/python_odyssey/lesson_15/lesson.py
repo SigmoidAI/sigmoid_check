@@ -149,7 +149,7 @@ class Lesson15:
             if self.status_tasks[f"task_{task_number}"]:
                 return f"Task {task_number}: Correct! Well done."
             return f"Task {task_number}: Incorrect! Please try again."
-        except Exception as e:
+        except:
             return f"Task {task_number}: Error!"
 
     def get_completion_percentage(self):
